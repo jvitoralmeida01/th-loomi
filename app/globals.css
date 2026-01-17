@@ -1,12 +1,36 @@
 @import "tailwindcss";
 
 :root {
+  --primary: #1876D2;
+  --surface: #20273E;
   --background: #0B1125;
+  --neutral-light: #FFF;
+  --label: #F6F8FC;
+  --label-disabled: #E9E9E980;
+  --priority-high: #BA1A1A;
+  --priority-neutral: #B5EDFF;
+  --priority-low: #E0F7FF;
+  --info-neutral: #43D2CB;
+  --info-warn: #D2B843;
+  --dashboard-accent: #2DB3C8;
+  --dashboard-gradient: linear-gradient(180deg, #75DFFFFF 0%, #75DFFF00 100%);
   --foreground: #fff;
 }
 
 @theme inline {
+  --color-primary: var(--primary);
+  --color-surface: var(--surface);
   --color-background: var(--background);
+  --color-neutral-light: var(--neutral-light);
+  --color-label: var(--label);
+  --color-label-disabled: var(--label-disabled);
+  --color-priority-high: var(--priority-high);
+  --color-priority-neutral: var(--priority-neutral);
+  --color-priority-low: var(--priority-low);
+  --color-info-neutral: var(--info-neutral);
+  --color-info-warn: var(--info-warn);
+  --color-dashboard-accent: var(--dashboard-accent);
+  --dashboard-gradient: var(--dashboard-gradient);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -14,7 +38,19 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
+    --primary: #1876D2;
+    --surface: #20273E;
     --background: #0B1125;
+    --neutral-light: #FFF;
+    --label: #F6F8FC;
+    --label-disabled: #E9E9E980;
+    --priority-high: #BA1A1A;
+    --priority-neutral: #B5EDFF;
+    --priority-low: #E0F7FF;
+    --info-neutral: #43D2CB;
+    --info-warn: #D2B843;
+    --dashboard-accent: #2DB3C8;
+    --dashboard-gradient: linear-gradient(180deg, #75DFFFFF 0%, #75DFFF00 100%);
     --foreground: #fff;
   }
 }
