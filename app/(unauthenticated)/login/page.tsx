@@ -5,10 +5,10 @@ import logo from "@/assets/text_logo.svg";
 import arrowDownIcon from "@/assets/icons/arrow_down.svg";
 import brFlag from "@/assets/flags/br.png";
 import helpIcon from "@/assets/icons/customer_support.svg";
-import Checkbox from "../_components/Checkbox";
-import Button, { ButtonVariant } from "../_components/Button";
-import TextField from "../_components/TextField";
-import ReverseBorderRadius from "../_components/ReverseBorderRadius";
+import Checkbox from "../../_components/Checkbox";
+import Button, { ButtonVariant } from "../../_components/Button";
+import TextField from "../../_components/TextField";
+import ReverseBorderRadius from "../../_components/ReverseBorderRadius";
 
 async function loginAction(formData: FormData) {
   "use server";
@@ -86,7 +86,7 @@ export default function LoginPage() {
                   variant={ButtonVariant.NAV}
                 >
                   <Image src={arrowDownIcon} alt="Arrow Down Icon" className="h-4 w-4" />
-                  <Image src={brFlag} alt="Flag Icon" className="h-4 w-4" />
+                  <Image src={brFlag} alt="Flag Icon" className="h-4 w-4 pointer-events-none" />
                   PT-br
                 </Button>
                 <div />
