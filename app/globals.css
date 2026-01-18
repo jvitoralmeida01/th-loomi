@@ -47,6 +47,14 @@
   --font-work-sans: var(--font-work-sans);
 }
 
+@utility glow-primary {
+  box-shadow: 0 0 10px var(--primary);
+}
+
+@utility shadow-xl-right {
+  box-shadow: 20px 0 25px -5px rgba(0, 0, 0, 0.1), 10px 0 10px -5px rgba(0, 0, 0, 0.04);
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --primary: #1876D2;
