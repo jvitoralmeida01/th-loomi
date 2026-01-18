@@ -86,7 +86,7 @@ export default function LoginPage() {
                   variant={ButtonVariant.NAV}
                 >
                   <Image src={arrowDownIcon} alt="Arrow Down Icon" className="h-4 w-4" />
-                  <Image src={brFlag} alt="Flag Icon" className="h-4 w-4 antialiased pointer-events-none" />
+                  <Image src={brFlag} alt="Flag Icon" className="h-4 w-4 pointer-events-none" />
                   PT-br
                 </Button>
                 <div />
