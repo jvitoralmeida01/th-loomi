@@ -1,13 +1,13 @@
 import Button, { ButtonVariant } from "./Button";
 import Image from "next/image";
 import addIcon from "@/assets/icons/add.svg";
-import NavbarTitle from "./NavbarTitle";
+import TopbarTitle from "@/app/_components/TopbarTitle";
 
-export default function Navbar() {
+export default function Topbar() {
   return (
     <nav className="fixed w-full top-0 z-40 bg-surface px-8 py-4 shadow-lg">
       <div className="flex flex-row justify-between items-center pl-24">
-        <NavbarTitle />
+        <TopbarTitle />
         <Button
           variant={ButtonVariant.ACTION}
           type="button"

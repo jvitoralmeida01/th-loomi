@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { routeTitles } from "@/app/_utils/routes";
 
-export default function NavbarTitle() {
+export default function TopbarTitle() {
   const pathname = usePathname();
 
   return (
