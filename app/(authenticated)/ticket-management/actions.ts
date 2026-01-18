@@ -55,7 +55,11 @@ export async function getTickets({
     const isPriorityMatch = priority ? ticket?.priority === priority : true;
     const isAssigneeMatch = assignee ? ticket?.assignee === assignee : true;
 
-    return (isQueryMatch && isStatusMatch && isPriorityMatch && isAssigneeMatch);
+    const filtersMatch = isStatusMatch && isPriorityMatch && isAssigneeMatch;
+
+    if (!normalizedQuery && hasFilters) return filtersMatch;
+
+    return isQueryMatch && filtersMatch;
   });
 
   const total = filteredTickets.length;
