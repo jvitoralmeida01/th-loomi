@@ -19,6 +19,8 @@
   --dashboard-accent: #2DB3C8;
   --dashboard-gradient: linear-gradient(180deg, #75DFFFFF 0%, #75DFFF00 100%);
   --foreground: #fff;
+  --glass-edge-info: #F6F8FC1A;
+  --glass-edge: rgba(255, 255, 255, 0.1);
 }
 
 @theme inline {
@@ -40,6 +42,8 @@
   --color-dashboard-accent: var(--dashboard-accent);
   --dashboard-gradient: var(--dashboard-gradient);
   --color-foreground: var(--foreground);
+  --color-glass-edge-info: var(--glass-edge-info);
+  --color-glass-edge: var(--glass-edge);
   --font-sans: var(--font-inter);
   --font-body: var(--font-inter);
   --font-space-grotesk: var(--font-space-grotesk);
@@ -75,6 +79,8 @@
     --dashboard-accent: #2DB3C8;
     --dashboard-gradient: linear-gradient(180deg, #75DFFFFF 0%, #75DFFF00 100%);
     --foreground: #fff;
+    --glass-edge-info: #F6F8FC1A;
+    --glass-edge: rgba(255, 255, 255, 0.1);
   }
 }
 
