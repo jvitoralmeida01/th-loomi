@@ -4,7 +4,11 @@
   --primary: #1876D2;
   --surface: #20273E;
   --background: #0B1125;
-  --neutral-light: #FFF;
+  --neutral-100: #FFF;
+  --neutral-200: #E3E3E3;
+  --neutral-300: #C9C9C9;
+  --neutral-400: #737677;
+  --required: #F4B7AE;
   --label: #F6F8FC;
   --label-disabled: #E9E9E980;
   --priority-high: #BA1A1A;
@@ -21,7 +25,11 @@
   --color-primary: var(--primary);
   --color-surface: var(--surface);
   --color-background: var(--background);
-  --color-neutral-light: var(--neutral-light);
+  --color-neutral-100: var(--neutral-100);
+  --color-neutral-200: var(--neutral-200);
+  --color-neutral-300: var(--neutral-300);
+  --color-neutral-400: var(--neutral-400);
+  --color-required: var(--required);
   --color-label: var(--label);
   --color-label-disabled: var(--label-disabled);
   --color-priority-high: var(--priority-high);
@@ -32,8 +40,11 @@
   --color-dashboard-accent: var(--dashboard-accent);
   --dashboard-gradient: var(--dashboard-gradient);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-body: var(--font-inter);
+  --font-space-grotesk: var(--font-space-grotesk);
+  --font-montserrat: var(--font-montserrat);
+  --font-work-sans: var(--font-work-sans);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -41,7 +52,11 @@
     --primary: #1876D2;
     --surface: #20273E;
     --background: #0B1125;
-    --neutral-light: #FFF;
+    --neutral-100: #FFF;
+    --neutral-200: #E3E3E3;
+    --neutral-300: #C9C9C9;
+    --neutral-400: #737677;
+    --required: #F4B7AE;
     --label: #F6F8FC;
     --label-disabled: #E9E9E980;
     --priority-high: #BA1A1A;
@@ -57,6 +72,6 @@
 
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--neutral-100);
+  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
 }
