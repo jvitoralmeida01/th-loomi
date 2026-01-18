@@ -1,6 +1,9 @@
 'use client';
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import Image from "next/image";
+import SkipIcon from "@/assets/icons/skip.svg";
+import SkipAllIcon from "@/assets/icons/skip_all.svg";
 
 interface PaginationProps {
   currentPage: number;
@@ -23,101 +26,45 @@ export default function Pagination({ currentPage, totalPages }: PaginationProps)
   }
 
   return (
-    <div className="flex items-center justify-center gap-2 mt-6">
+    <div className="flex flex-row items-center justify-end gap-4 pt-3">
       <button
         type="button"
         disabled={currentPage === 1}
         onClick={() => handlePageChange(1)}
-        className="px-3 py-2 rounded-lg border border-glass-edge bg-neutral-100/5 text-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-100/10 transition-colors"
-        aria-label="Primeira página"
+        className="px-3 py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-100/10 cursor-pointer transition-colors"
+        aria-label="First page"
       >
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M8 12L3 7L8 2M13 12L8 7L13 2"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <Image src={SkipAllIcon} alt="Skip to first page" className="w-3 h-3 rotate-180 pointer-events-none" />
       </button>
       <button
         type="button"
         disabled={currentPage === 1}
         onClick={() => handlePageChange(currentPage - 1)}
-        className="px-3 py-2 rounded-lg border border-glass-edge bg-neutral-100/5 text-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-100/10 transition-colors"
-        aria-label="Página anterior"
+        className="px-3 py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-100/10 cursor-pointer transition-colors"
+        aria-label="Previous page"
       >
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M10 12L5 7L10 2"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <Image src={SkipIcon} alt="Go to previous page" className="w-3 h-3 rotate-180 pointer-events-none" />
       </button>
-      <span className="px-4 py-2 text-sm text-neutral-100">
+      <span className="px-4 text-sm text-neutral-100">
         {currentPage} de {totalPages}
       </span>
       <button
         type="button"
         disabled={currentPage === totalPages}
         onClick={() => handlePageChange(currentPage + 1)}
-        className="px-3 py-2 rounded-lg border border-glass-edge bg-neutral-100/5 text-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-100/10 transition-colors"
-        aria-label="Próxima página"
+        className="px-3 py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-100/10 cursor-pointer transition-colors"
+        aria-label="Next page"
       >
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M6 12L11 7L6 2"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <Image src={SkipIcon} alt="Go to next page" className="w-3 h-3 pointer-events-none" />
       </button>
       <button
         type="button"
         disabled={currentPage === totalPages}
         onClick={() => handlePageChange(totalPages)}
-        className="px-3 py-2 rounded-lg border border-glass-edge bg-neutral-100/5 text-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-100/10 transition-colors"
-        aria-label="Última página"
+        className="px-3 py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-100/10 cursor-pointer transition-colors"
+        aria-label="Last page"
       >
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M8 12L13 7L8 2M3 12L8 7L3 2"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <Image src={SkipAllIcon} alt="Skip to last page" className="w-3 h-3 pointer-events-none" />
       </button>
     </div>
   );

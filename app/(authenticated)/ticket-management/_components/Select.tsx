@@ -30,7 +30,7 @@ export default function Select({
         name={name}
         onChange={onChange}
         {...selectProps}
-        className="appearance-none rounded-full bg-background px-4 py-2 pr-10 text-sm text-label placeholder:text-label focus:outline-none focus:border-primary cursor-pointer"
+        className="appearance-none rounded-full bg-background px-4 py-2 pr-10 text-xs text-label placeholder:text-label focus:outline-none focus:border-primary cursor-pointer"
       >
         {placeholder && (
           <option value="" disabled>

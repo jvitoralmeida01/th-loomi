@@ -45,16 +45,16 @@ export default function Filters() {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row gap-4 mb-6">
+      <div className="flex flex-col md:flex-row gap-2 overflow-x-auto">
         <div className="flex-1">
           <div className="relative">
             <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
-              <Image src={SearchIcon} alt="Search" width={14} height={14} />
+              <Image src={SearchIcon} alt="Search" className="w-3 h-3" />
             </div>
             <input
               type="text"
               placeholder="Buscar por ID, cliente ou assunto..."
-              className="w-full rounded-full bg-background px-4 pl-10 py-2 text-sm text-label placeholder:text-label focus:outline-none focus:border-primary"
+              className="w-full rounded-full bg-background px-4 pl-10 py-2 text-xs text-label placeholder:text-label focus:outline-none focus:border-primary"
               defaultValue={defaultQuery}
               onChange={(e) => handleSearch(e.target.value)}
             />

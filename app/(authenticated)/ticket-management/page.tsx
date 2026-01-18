@@ -10,7 +10,7 @@ import { getTickets } from "./actions";
 import { mockOpenTickets, mockInProgressTickets, mockResolvedToday, mockAverageTime } from "./_utils/mock";
 import Card from "@/app/_components/Card";
 
-const ITEMS_PER_PAGE = 7;
+const ITEMS_PER_PAGE = 5;
 
 interface TicketManagementPageProps {
   searchParams?: Promise<{
@@ -41,10 +41,8 @@ export default async function TicketManagementPage({
     itemsPerPage: ITEMS_PER_PAGE,
   });
 
-  console.log(`size: ${paginatedTickets?.length}`);
-
   return (
-    <div className="py-8 px-6 md:px-12 lg:px-20 xl:px-40 space-y-8 max-w-full">
+    <div className="py-8 px-32 space-y-8 max-w-full">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <InfoCard
           title="Tickets Abertos"
@@ -64,44 +62,44 @@ export default async function TicketManagementPage({
         <InfoCard title="Tempo Médio" value={mockAverageTime} icon={clockIcon} />
       </div>
 
-      <Card className="p-6">
-        <h2 className="text-xl font-semibold text-neutral-100 mb-6">Lista de Tickets</h2>
+      <Card className="flex flex-col gap-2 p-6">
+        <h2 className="text-md font-montserrat font-bold text-neutral-100">Lista de Tickets</h2>
 
         <Filters />
 
-        <div className="overflow-x-auto">
-          <table className="w-full">
+        <div className="overflow-x-auto rounded-xl bg-neutral-100/5 px-4 py-1 mt-2 pb-4">
+          <table className="w-full table-fixed text-left">
             <thead>
               <tr className="border-b border-glass-edge">
-                <th className="px-6 py-4 text-left text-xs font-semibold text-neutral-400 uppercase tracking-wider">
+                <th className="w-[8%] px-2 py-4 text-xs font-montserrat font-normal text-neutral-100/70">
                   ID
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-neutral-400 uppercase tracking-wider">
+                <th className="w-[10%] px-2 py-4 text-xs font-montserrat font-normal text-neutral-100/70">
                   Prioridade
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-neutral-400 uppercase tracking-wider">
+                <th className="w-[20%] px-2 py-4 text-xs font-montserrat font-normal text-neutral-100/70">
                   Cliente
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-neutral-400 uppercase tracking-wider">
+                <th className="w-[18%] px-2 py-4 text-xs font-montserrat font-normal text-neutral-100/70">
                   Assunto
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-neutral-400 uppercase tracking-wider">
+                <th className="w-[12%] px-2 py-4 text-xs font-montserrat font-normal text-neutral-100/70">
                   Status
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-neutral-400 uppercase tracking-wider">
+                <th className="w-[10%] px-2 py-4 text-xs font-montserrat font-normal text-neutral-100/70">
                   Criado em
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-neutral-400 uppercase tracking-wider">
+                <th className="w-[10%] px-2 py-4 text-xs font-montserrat font-normal text-neutral-100/70">
                   Responsável
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-neutral-400 uppercase tracking-wider">
+                <th className="w-[12%] px-2 py-4 text-xs font-montserrat font-normal text-neutral-100/70">
                   Ações
                 </th>
               </tr>
             </thead>
             <tbody>
-              {paginatedTickets.map((ticket) => (
-                <TableRow key={ticket.id} ticket={ticket} />
+              {paginatedTickets.map((ticket, index) => (
+                <TableRow key={ticket.id} ticket={ticket} isLastRow={index === paginatedTickets.length - 1} />
               ))}
             </tbody>
           </table>

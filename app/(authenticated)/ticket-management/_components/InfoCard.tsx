@@ -8,12 +8,14 @@ interface InfoCardProps {
 
 export default function InfoCard({ title, value, icon }: InfoCardProps) {
   return (
-    <div className="rounded-xl bg-neutral-100/5 border border-glass-edge-info backdrop-blur-sm p-6">
+    <div className="flex flex-col gap-4 rounded-xl bg-neutral-100/5 border border-glass-edge-info backdrop-blur-sm p-4">
       <div className="flex items-center justify-between mb-2">
-        <h3 className="text-sm text-neutral-300">{title}</h3>
-        <Image src={icon} alt={title} width={24} height={24} />
+        <h3 className="font-montserrat font-normal text-xs text-neutral-100">{title}</h3>
       </div>
-      <p className="text-2xl font-semibold text-neutral-100">{value}</p>
+      <div className="flex items-center justify-between">
+        <p className="text-xl font-montserrat font-bold text-neutral-100">{value}</p>
+        <Image src={icon} alt={title} className="w-6 h-6 pointer-events-none" />
+      </div>
     </div>
   );
 }
