@@ -1,5 +1,10 @@
 // Mock data - replace with actual data fetching
 
+export const mockOpenTickets = 16;
+export const mockInProgressTickets = 7;
+export const mockResolvedToday = 12;
+export const mockAverageTime = "2.5h";
+
 export const mockStatusOptions = [
   { value: "", label: "Todos os status" },
   { value: "open", label: "Aberto" },

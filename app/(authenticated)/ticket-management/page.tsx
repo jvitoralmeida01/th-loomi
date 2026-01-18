@@ -1,4 +1,4 @@
-import InfoCard from "../../_components/InfoCard";
+import InfoCard from "./_components/InfoCard";
 import TableRow from "../../_components/TableRow";
 import Pagination from "../../_components/Pagination";
 import openTicketIcon from "@/assets/icons/open_ticket.svg";
@@ -6,9 +6,11 @@ import incomingIcon from "@/assets/icons/incoming.svg";
 import checkboxIcon from "@/assets/icons/checkbox.svg";
 import clockIcon from "@/assets/icons/clock.svg";
 import Filters from "./_components/Filters";
-import { getTickets, type Ticket } from "./actions";
+import { getTickets } from "./actions";
+import { mockOpenTickets, mockInProgressTickets, mockResolvedToday, mockAverageTime } from "./_utils/mock";
+import Card from "@/app/_components/Card";
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 7;
 
 interface TicketManagementPageProps {
   searchParams?: Promise<{
@@ -41,33 +43,28 @@ export default async function TicketManagementPage({
 
   console.log(`size: ${paginatedTickets?.length}`);
 
-  const openTickets = 12;
-  const inProgressTickets = 12;
-  const resolvedToday = 12;
-  const averageTime = "2.5h";
-
   return (
-    <div className="p-8 space-y-8">
+    <div className="py-8 px-6 md:px-12 lg:px-20 xl:px-40 space-y-8 max-w-full">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <InfoCard
           title="Tickets Abertos"
-          value={openTickets.toString()}
+          value={mockOpenTickets.toString()}
           icon={openTicketIcon}
         />
         <InfoCard
           title="Em andamento"
-          value={inProgressTickets.toString()}
+          value={mockInProgressTickets.toString()}
           icon={incomingIcon}
         />
         <InfoCard
           title="Resolvidos hoje"
-          value={resolvedToday.toString()}
+          value={mockResolvedToday.toString()}
           icon={checkboxIcon}
         />
-        <InfoCard title="Tempo Médio" value={averageTime} icon={clockIcon} />
+        <InfoCard title="Tempo Médio" value={mockAverageTime} icon={clockIcon} />
       </div>
 
-      <div className="rounded-xl bg-neutral-100/5 border border-glass-edge backdrop-blur-sm p-6">
+      <Card className="p-6">
         <h2 className="text-xl font-semibold text-neutral-100 mb-6">Lista de Tickets</h2>
 
         <Filters />
@@ -111,7 +108,7 @@ export default async function TicketManagementPage({
         </div>
 
         <Pagination currentPage={currentPage} totalPages={totalPages} />
-      </div>
+      </Card>
     </div>
   );
 }

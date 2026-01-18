@@ -1,7 +1,7 @@
 'use client';
 
 import Image from "next/image";
-import Select from "@/app/_components/Select";
+import Select from "@/app/(authenticated)/ticket-management/_components/Select";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import SearchIcon from "@/assets/icons/search.svg";
 import { useDebouncedCallback } from "use-debounce";
@@ -49,12 +49,12 @@ export default function Filters() {
         <div className="flex-1">
           <div className="relative">
             <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
-              <Image src={SearchIcon} alt="Search" width={20} height={20} />
+              <Image src={SearchIcon} alt="Search" width={14} height={14} />
             </div>
             <input
               type="text"
               placeholder="Buscar por ID, cliente ou assunto..."
-              className="w-full rounded-xl border border-neutral-400 bg-background px-4 pl-12 py-4 text-sm text-label focus:outline-none focus:border-primary"
+              className="w-full rounded-full bg-background px-4 pl-10 py-2 text-sm text-label placeholder:text-label focus:outline-none focus:border-primary"
               defaultValue={defaultQuery}
               onChange={(e) => handleSearch(e.target.value)}
             />
