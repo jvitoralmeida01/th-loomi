@@ -43,7 +43,7 @@ export default function TextField({
   };
 
   return (
-    <div className={`space-y-2 ${className}`}>
+    <div className={`flex flex-col gap-2 ${className}`}>
       <div className="relative flex items-center rounded-xl border border-neutral-400 bg-transparent px-4 py-4 focus-within:border-primary">
         {showPlaceholder && (
           <label
