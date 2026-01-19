@@ -6,6 +6,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import SearchIcon from "@/assets/icons/search.svg";
 import { useDebouncedCallback } from "use-debounce";
 import { mockStatusOptions, mockPriorityOptions, mockAssigneeOptions } from "../_utils/mock";
+import clearParams from "../../../_utils/clearNewTicketParams";
 
 export default function Filters() {
   const searchParams = useSearchParams();
@@ -28,7 +29,7 @@ export default function Filters() {
   }, 300);
 
   const handleFilter = (status?: string, priority?: string, assignee?: string) => {
-    const params = new URLSearchParams(searchParams);
+    const params = clearParams(new URLSearchParams(searchParams));
 
     if (status) params.set("status", status);
     else params.delete("status");

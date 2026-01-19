@@ -6,9 +6,12 @@ import incomingIcon from "@/assets/icons/incoming.svg";
 import checkboxIcon from "@/assets/icons/checkbox.svg";
 import clockIcon from "@/assets/icons/clock.svg";
 import Filters from "./_components/Filters";
-import { getTickets } from "./actions";
+import { createTicket, CreateTicketParams, getTickets, NewTicketFeedbackType } from "./actions";
 import { mockOpenTickets, mockInProgressTickets, mockResolvedToday, mockAverageTime } from "./_utils/mock";
 import Card from "@/app/_components/Card";
+import Modal from "@/app/_components/Modal";
+import NewTicketForm from "./_components/NewTicketForm";
+import NewTicketFeedback from "./_components/NewTicketFeedback";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -19,6 +22,8 @@ interface TicketManagementPageProps {
     priority?: Promise<string>;
     assignee?: Promise<string>;
     page?: Promise<string>;
+    newTicket?: Promise<string>;
+    formData?: Promise<string>;
   }>;
 }
 
@@ -31,6 +36,8 @@ export default async function TicketManagementPage({
   const priority = await params?.priority || "";
   const assignee = await params?.assignee || "";
   const page = parseInt(await params?.page || "1", 10);
+  const showNewTicketModal = Boolean(await params?.newTicket);
+  const formData: CreateTicketParams | null = (await params?.formData) ? JSON.parse(decodeURIComponent(await params?.formData || "{}")) : null;
 
   const { tickets: paginatedTickets, totalPages, currentPage } = await getTickets({
     query,
@@ -40,6 +47,10 @@ export default async function TicketManagementPage({
     page,
     itemsPerPage: ITEMS_PER_PAGE,
   });
+
+  if (formData) {
+    await createTicket(formData);
+  }
 
   return (
     <div className="flex flex-col gap-8 py-8 px-32 max-w-full">
@@ -117,6 +128,12 @@ export default async function TicketManagementPage({
 
         <Pagination currentPage={currentPage} totalPages={totalPages} />
       </Card>
+
+      <Modal isOpen={showNewTicketModal}>
+        <NewTicketForm />
+      </Modal>
+
+      <NewTicketFeedback />
     </div>
   );
 }

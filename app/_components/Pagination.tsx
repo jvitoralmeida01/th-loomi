@@ -4,6 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import SkipIcon from "@/assets/icons/skip.svg";
 import SkipAllIcon from "@/assets/icons/skip_all.svg";
+import clearParams from "@/app/_utils/clearNewTicketParams";
 
 interface PaginationProps {
   currentPage: number;
@@ -16,7 +17,7 @@ export default function Pagination({ currentPage, totalPages }: PaginationProps)
   const { replace } = useRouter();
 
   function handlePageChange(page: number) {
-    const params = new URLSearchParams(searchParams);
+    const params = clearParams(new URLSearchParams(searchParams));
     if (page === 1) {
       params.delete("page");
     } else {
