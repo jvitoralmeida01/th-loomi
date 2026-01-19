@@ -25,7 +25,7 @@ export default function ClientAgeSlider() {
           Idade do Cliente: {clientAge} anos
         </span>
       </div>
-      <div className="relative">
+      <div className="flex">
         <input
           type="range"
           min={clientAgeRange.min}
@@ -35,11 +35,11 @@ export default function ClientAgeSlider() {
           onChange={handleChange}
           className="w-full h-1 rounded-full appearance-none cursor-pointer slider-age"
           style={{
-            background: `linear-gradient(to right, var(--color-primary) 0%, var(--color-primary) ${percentage}%, var(--color-neutral-400) ${percentage}%, var(--color-neutral-400) 100%)`,
+            background: `linear-gradient(to right, var(--color-primary) 0%, var(--color-primary) ${percentage}%, var(--color-neutral-100) ${percentage}%, var(--color-neutral-100) 100%)`,
           }}
         />
       </div>
-      <div className="flex justify-between text-xs font-montserrat text-neutral-400">
+      <div className="flex justify-between text-xs font-montserrat text-neutral-100">
         <span>{clientAgeRange.min} anos</span>
         <span>{clientAgeRange.max} anos</span>
       </div>

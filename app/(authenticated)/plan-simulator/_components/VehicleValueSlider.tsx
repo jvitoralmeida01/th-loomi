@@ -27,7 +27,7 @@ export default function VehicleValueSlider() {
           Valor do veículo: {formatCurrency(vehicleValue)}
         </span>
       </div>
-      <div className="relative">
+      <div className="flex">
         <input
           type="range"
           min={vehicleValueRange.min}
@@ -35,13 +35,13 @@ export default function VehicleValueSlider() {
           step={vehicleValueRange.step}
           value={vehicleValue}
           onChange={handleChange}
-          className="w-full h-1 rounded-full appearance-none cursor-pointer slider-vehicle"
+          className="w-full h-1 rounded-full appearance-none cursor-pointer"
           style={{
-            background: `linear-gradient(to right, var(--color-primary) 0%, var(--color-primary) ${percentage}%, var(--color-neutral-400) ${percentage}%, var(--color-neutral-400) 100%)`,
+            background: `linear-gradient(to right, var(--color-primary) 0%, var(--color-primary) ${percentage}%, var(--color-neutral-100) ${percentage}%, var(--color-neutral-100) 100%)`,
           }}
         />
       </div>
-      <div className="flex justify-between text-xs font-montserrat text-neutral-400">
+      <div className="flex justify-between text-xs font-montserrat text-neutral-100">
         <span>{formatCurrency(vehicleValueRange.min)}</span>
         <span>{formatCurrency(vehicleValueRange.max)}</span>
       </div>
