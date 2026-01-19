@@ -1,6 +1,6 @@
 interface BadgeProps {
   label: string;
-  variant: "urgent" | "medium" | "low" | "open" | "in-progress" | "resolved";
+  variant: "urgent" | "medium" | "low" | "open" | "in-progress" | "resolved" | "active" | "pending";
   className?: string;
 }
 
@@ -12,6 +12,8 @@ export default function Badge({ label, variant, className = "" }: BadgeProps) {
     open: "bg-info-neutral text-background",
     "in-progress": "bg-info-warn text-background",
     resolved: "bg-neutral-400 text-background",
+    active: "bg-info-neutral text-background",
+    pending: "bg-info-warn text-background",
   };
 
   return (
