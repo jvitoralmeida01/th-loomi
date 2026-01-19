@@ -14,6 +14,7 @@
   --priority-high: #BA1A1A;
   --priority-neutral: #B5EDFF;
   --priority-low: #E0F7FF;
+  --info-success: #00DC04;
   --info-neutral: #43D2CB;
   --info-warn: #D2B843;
   --dashboard-kpi-button: #2DB3C8;
@@ -39,6 +40,7 @@
   --color-priority-high: var(--priority-high);
   --color-priority-neutral: var(--priority-neutral);
   --color-priority-low: var(--priority-low);
+  --color-info-success: var(--info-success);
   --color-info-neutral: var(--info-neutral);
   --color-info-warn: var(--info-warn);
   --color-dashboard-conversion-chart: var(--dashboard-conversion-chart);
@@ -63,6 +65,10 @@
   box-shadow: 0 0 10px var(--dashboard-kpi-button);
 }
 
+@utility text-glow-info-success {
+  text-shadow: 0 0 10px var(--info-success);
+}
+
 @utility shadow-xl-right {
   box-shadow: 20px 0 25px -5px rgba(0, 0, 0, 0.1), 10px 0 10px -5px rgba(0, 0, 0, 0.04);
 }
@@ -82,6 +88,7 @@
     --priority-high: #BA1A1A;
     --priority-neutral: #B5EDFF;
     --priority-low: #E0F7FF;
+    --info-success: #00DC04;
     --info-neutral: #43D2CB;
     --info-warn: #D2B843;
     --dashboard-kpi-button: #2DB3C8;
@@ -98,4 +105,45 @@ body {
   background: var(--background);
   color: var(--neutral-100);
   font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+}
+
+/* Slider Styles */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 4px;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+  border: 2px solid var(--neutral-100);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.15s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+  border: 2px solid var(--neutral-100);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.15s ease;
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+  transform: scale(1.1);
 }
