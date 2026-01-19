@@ -30,14 +30,14 @@ export default function PlanCards() {
             key={plan.id}
             type="button"
             onClick={() => handleSelectPlan(plan.id)}
-            className={`flex-1 flex flex-col items-start p-4 rounded-xl border transition-all cursor-pointer ${
+            className={`flex-1 flex flex-col items-start gap-5 p-4 rounded-xl border transition-all cursor-pointer ${
               isSelected
                 ? "border-primary bg-neutral-100/5"
                 : "border-glass-edge bg-neutral-100/5 hover:bg-neutral-100/0"
             }`}
           >
-            <div className="flex items-center justify-between w-full mb-2">
-              <span className="text-xs font-montserrat text-neutral-100">
+            <div className="flex items-start justify-between w-full">
+              <span className="text-xs font-montserrat font-bold text-neutral-100">
                 {plan.name}
               </span>
               {plan.recommended && (
@@ -49,7 +49,7 @@ export default function PlanCards() {
             <span className="text-xl font-montserrat font-bold text-neutral-100">
               {formatCurrency(calculatedPrice)}
             </span>
-            <span className="text-xs font-montserrat text-neutral-400 mt-1">
+            <span className="text-xs font-montserrat text-neutral-400">
               Por mês
             </span>
           </button>

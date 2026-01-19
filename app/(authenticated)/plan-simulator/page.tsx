@@ -9,8 +9,8 @@ import PlanIndicators from "./_components/PlanIndicators";
 export default function PlanSimulatorPage() {
   return (
     <div className="py-8 px-32 max-w-full">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2 p-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <Card className="lg:col-span-2 py-6 px-5">
           <div className="flex flex-col gap-8">
             <div className="flex flex-col gap-4">
               <h2 className="text-md font-montserrat font-bold text-neutral-100">
@@ -23,16 +23,18 @@ export default function PlanSimulatorPage() {
 
             <ClientAgeSlider />
 
-            <AdditionalCoverages />
+            <div className="mb-4">
+              <AdditionalCoverages />
+            </div>
           </div>
         </Card>
 
-        <div className="flex flex-col gap-6">
-          <Card className="p-6">
+        <div className="flex flex-col gap-8">
+          <Card className="py-6 px-8">
             <IncludedBenefits />
           </Card>
 
-          <Card className="p-6">
+          <Card className="py-6 px-8">
             <PlanIndicators />
           </Card>
         </div>

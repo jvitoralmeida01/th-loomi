@@ -20,7 +20,7 @@ export default function PlanIndicators() {
       <h3 className="text-md font-montserrat font-bold text-neutral-100">
         Indicadores
       </h3>
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-6">
         {plans.map((plan) => {
           const calculatedPrice = calculatePlanPrice(
             plan.basePrice,
@@ -69,7 +69,7 @@ export default function PlanIndicators() {
                   </span>
                 </div>
               </div>
-              <span className="text-lg font-montserrat font-bold text-neutral-100">
+              <span className="text-md font-montserrat font-bold text-neutral-100">
                 {formatCurrency(calculatedPrice)}
               </span>
             </div>
