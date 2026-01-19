@@ -34,8 +34,8 @@ export default function LoginPage() {
               </p>
             </div>
 
-            <form action={loginAction} className="space-y-5 w-full">
-              <div className="space-y-6">
+            <form action={loginAction} className="flex flex-col gap-5 w-full">
+              <div className="flex flex-col gap-6">
                 <TextField
                   name="username"
                   type="email"

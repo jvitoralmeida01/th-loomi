@@ -16,8 +16,10 @@
   --priority-low: #E0F7FF;
   --info-neutral: #43D2CB;
   --info-warn: #D2B843;
-  --dashboard-accent: #2DB3C8;
-  --dashboard-gradient: linear-gradient(180deg, #75DFFFFF 0%, #75DFFF00 100%);
+  --dashboard-kpi-button: #2DB3C8;
+  --dashboard-kpi-chart: #46F0EE;
+  --dashboard-kpi-chart-border: #6CE6FC;
+  --dashboard-conversion-chart: #66DAFF;
   --foreground: #fff;
   --glass-edge-info: #F6F8FC1A;
   --glass-edge: rgba(255, 255, 255, 0.1);
@@ -39,8 +41,10 @@
   --color-priority-low: var(--priority-low);
   --color-info-neutral: var(--info-neutral);
   --color-info-warn: var(--info-warn);
-  --color-dashboard-accent: var(--dashboard-accent);
-  --dashboard-gradient: var(--dashboard-gradient);
+  --color-dashboard-conversion-chart: var(--dashboard-conversion-chart);
+  --color-dashboard-kpi-button: var(--dashboard-kpi-button);
+  --color-dashboard-kpi-chart: var(--dashboard-kpi-chart);
+  --color-dashboard-kpi-chart-border: var(--dashboard-kpi-chart-border);
   --color-foreground: var(--foreground);
   --color-glass-edge-info: var(--glass-edge-info);
   --color-glass-edge: var(--glass-edge);
@@ -53,6 +57,10 @@
 
 @utility glow-primary {
   box-shadow: 0 0 10px var(--primary);
+}
+
+@utility glow-dashboard-kpi-button {
+  box-shadow: 0 0 10px var(--dashboard-kpi-button);
 }
 
 @utility shadow-xl-right {
@@ -76,8 +84,10 @@
     --priority-low: #E0F7FF;
     --info-neutral: #43D2CB;
     --info-warn: #D2B843;
-    --dashboard-accent: #2DB3C8;
-    --dashboard-gradient: linear-gradient(180deg, #75DFFFFF 0%, #75DFFF00 100%);
+    --dashboard-kpi-button: #2DB3C8;
+    --dashboard-kpi-chart: #46F0EE;
+    --dashboard-kpi-chart-border: #6CE6FC;
+    --dashboard-conversion-chart: #66DAFF;
     --foreground: #fff;
     --glass-edge-info: #F6F8FC1A;
     --glass-edge: rgba(255, 255, 255, 0.1);

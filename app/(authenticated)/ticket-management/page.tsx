@@ -42,7 +42,7 @@ export default async function TicketManagementPage({
   });
 
   return (
-    <div className="py-8 px-32 space-y-8 max-w-full">
+    <div className="flex flex-col gap-8 py-8 px-32 max-w-full">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <InfoCard
           title="Tickets Abertos"
@@ -101,6 +101,16 @@ export default async function TicketManagementPage({
               {paginatedTickets.map((ticket, index) => (
                 <TableRow key={ticket.id} ticket={ticket} isLastRow={index === paginatedTickets.length - 1} />
               ))}
+              {paginatedTickets.length === 0 && (
+              <tr>
+                <td
+                  colSpan={9}
+                  className="px-2 py-8 text-center text-xs text-neutral-400"
+                >
+                  Nenhum ticket encontrado
+                </td>
+              </tr>
+            )}
             </tbody>
           </table>
         </div>

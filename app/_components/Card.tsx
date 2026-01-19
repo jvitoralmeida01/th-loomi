@@ -6,7 +6,7 @@ export default function Card({
   className?: string;
 }>) {
   return (
-    <div className={`rounded-3xl bg-neutral-100/5 border border-glass-edge-info backdrop-blur-sm ${className}`}>
+    <div className={`rounded-3xl bg-neutral-100/5 border border-glass-edge backdrop-blur-sm ${className}`}>
       {children}
     </div>
   );
