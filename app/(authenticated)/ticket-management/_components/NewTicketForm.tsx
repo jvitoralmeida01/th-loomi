@@ -1,10 +1,10 @@
 import Button from "@/app/_components/Button";
 import { cancelTicketCreation, fillTicketParameters } from "../actions";
-import { mockPriorityOptions } from "../_utils/mock";
 import Image from "next/image";
 import CloseOutlinedIcon from "@/assets/icons/close_outlined.svg";
 import NewTicketFormCancelButton from "./NewTicketFormCancelButton";
 import ArrowDownIcon from "@/assets/icons/arrow_down.svg";
+import { TicketPriorityValues } from "@/src/domain/entities/tickets";
 
 export default function NewTicketForm() {
   return (
@@ -75,11 +75,11 @@ export default function NewTicketForm() {
               <option value="" disabled className="bg-background">
                 Selecione o nível de urgência do atendimento
               </option>
-              {mockPriorityOptions
-                .filter((opt) => opt.value !== "")
-                .map((option) => (
-                  <option key={option.value} value={option.value} className="bg-background">
-                    {option.label}
+              {TicketPriorityValues
+                .filter((priority) => priority !== "Urgente")
+                .map((priority) => (
+                  <option key={priority} value={priority} className="bg-background">
+                    {priority}
                   </option>
                 ))}
             </select>

@@ -1,18 +1,8 @@
-import Badge from "./Badge";
+import Badge from "../../../_components/Badge";
 import Image from "next/image";
 import editIcon from "@/assets/icons/edit.svg";
 import goToIcon from "@/assets/icons/go_to.svg";
-
-interface Ticket {
-  id: string;
-  priority: "urgent" | "medium" | "low";
-  clientName: string;
-  clientEmail: string;
-  subject: string;
-  status: "open" | "in-progress" | "resolved";
-  createdAt: string;
-  assignee: string;
-}
+import { Ticket } from "@/src/domain/entities/tickets";
 
 interface TableRowProps {
   ticket: Ticket;
@@ -20,18 +10,6 @@ interface TableRowProps {
 }
 
 export default function TableRow({ ticket, isLastRow = false }: TableRowProps) {
-  const priorityLabels = {
-    urgent: "Urgente",
-    medium: "Média",
-    low: "Baixa",
-  };
-
-  const statusLabels = {
-    open: "Aberto",
-    "in-progress": "Em andamento",
-    resolved: "Resolvido",
-  };
-
   return (
     <tr className={`border-b border-glass-edge hover:bg-neutral-100/10 transition-colors ${isLastRow ? "border-b-0" : "border-b"}`}>
       <td
@@ -42,9 +20,9 @@ export default function TableRow({ ticket, isLastRow = false }: TableRowProps) {
       </td>
       <td
         className="px-2 py-2"
-        title={priorityLabels[ticket.priority]}
+        title={ticket.priority}
       >
-        <Badge variant={ticket.priority} label={priorityLabels[ticket.priority]} />
+        <Badge variant={ticket.priority} label={ticket.priority} />
       </td>
       <td className="px-2 py-2" title={`${ticket.clientName} - ${ticket.clientEmail}`}>
         <div className="flex flex-col">
@@ -58,8 +36,8 @@ export default function TableRow({ ticket, isLastRow = false }: TableRowProps) {
       >
         {ticket.subject}
       </td>
-      <td className="px-2 py-2" title={statusLabels[ticket.status]}>
-        <Badge variant={ticket.status} label={statusLabels[ticket.status]} />
+      <td className="px-2 py-2" title={ticket.status}>
+        <Badge variant={ticket.status} label={ticket.status} />
       </td>
       <td
         className="px-2 py-2 font-montserrat font-semibold text-xs text-neutral-100 overflow-hidden text-ellipsis"
