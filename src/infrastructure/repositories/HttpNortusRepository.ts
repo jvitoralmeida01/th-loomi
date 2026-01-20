@@ -1,4 +1,5 @@
 import { injectable } from "tsyringe";
+import { cookies } from "next/headers";
 import { INortusRepository } from "@/src/application/repositories.interface/INortusRepository";
 import {
   GetAllTicketsResponse,
@@ -18,6 +19,7 @@ import {
   LoginResponse,
 } from "@/src/domain/responses/auth";
 import { GetChatHistoryResponse } from "@/src/domain/responses/chat";
+import { AUTH_TOKEN_COOKIE } from "@/src/application/services/AuthService";
 
 export const TICKETS_CACHE_TAG = "tickets";
 export const DASHBOARD_CACHE_TAG = "dashboard";
@@ -27,20 +29,23 @@ export const PLAN_SIMULATOR_CACHE_TAG = "plan-simulator";
 @injectable()
 export class HttpNortusRepository implements INortusRepository {
   private readonly apiBaseUrl: string;
-  private readonly authToken: string;
-  private readonly headers: Record<string, string>;
 
   constructor() {
     this.apiBaseUrl = process.env.API_BASE_URL || "";
-    this.authToken = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0OGFlMDBjLWFiOTgtNGJiMS05MjdmLWYyMzVlN2FjZDZiZiIsImNoYWxsZW5nZUxldmVsIjoyLCJyZWZyZXNoX3Rva2VuIjp7ImlkIjoiM2QzODA5NTEtZTk5Yi00NzcwLTlkYjctZGM4MzIzMmQ4NjE1IiwiZWF0IjoiMjAyNi0wMi0xOVQwMDoxNjoyNi44NzhaIn0sImlhdCI6MTc2ODg2ODE4NiwiZXhwIjoxODU1MjY4MTg2fQ.dEAldDmFKUtxzqprwgb7vGno3salrVjO5Q7u0YVvjpY`;
-    this.headers = {
-      "Content-Type": "application/json",
-      Authorization: this.authToken,
-    };
 
     if (!this.apiBaseUrl) {
       throw new Error("API_BASE_URL environment variable is not set");
     }
+  }
+
+  private async getAuthHeaders(): Promise<Record<string, string>> {
+    const cookieStore = await cookies();
+    const authToken = cookieStore.get(AUTH_TOKEN_COOKIE)?.value;
+
+    return {
+      "Content-Type": "application/json",
+      ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+    };
   }
 
   async login(credentials: LoginRequest): Promise<LoginResponse> {
@@ -67,7 +72,7 @@ export class HttpNortusRepository implements INortusRepository {
       `${this.apiBaseUrl}/users/by-email/${encodeURIComponent(email)}`,
       {
         method: "GET",
-        headers: this.headers,
+        headers: await this.getAuthHeaders(),
         cache: "no-store",
       }
     );
@@ -84,7 +89,7 @@ export class HttpNortusRepository implements INortusRepository {
   async getAllTickets(): Promise<GetAllTicketsResponse> {
     const response = await fetch(`${this.apiBaseUrl}/tickets`, {
       method: "GET",
-      headers: this.headers,
+      headers: await this.getAuthHeaders(),
       next: {
         revalidate: 300,
         tags: [TICKETS_CACHE_TAG],
@@ -103,7 +108,7 @@ export class HttpNortusRepository implements INortusRepository {
   async getTicketById(ticketId: string): Promise<GetTicketByIdResponse> {
     const response = await fetch(`${this.apiBaseUrl}/tickets/${ticketId}`, {
       method: "GET",
-      headers: this.headers,
+      headers: await this.getAuthHeaders(),
       cache: "no-store",
     });
 
@@ -119,7 +124,7 @@ export class HttpNortusRepository implements INortusRepository {
   async createTicket(ticket: CreateTicketRequest): Promise<void> {
     const response = await fetch(`${this.apiBaseUrl}/tickets`, {
       method: "POST",
-      headers: this.headers,
+      headers: await this.getAuthHeaders(),
       body: JSON.stringify(ticket),
     });
 
@@ -138,7 +143,7 @@ export class HttpNortusRepository implements INortusRepository {
   ): Promise<void> {
     const response = await fetch(`${this.apiBaseUrl}/tickets/${ticketId}`, {
       method: "PATCH",
-      headers: this.headers,
+      headers: await this.getAuthHeaders(),
       body: JSON.stringify(ticket),
     });
 
@@ -156,7 +161,7 @@ export class HttpNortusRepository implements INortusRepository {
   async getDashboardData(): Promise<GetDashboardResponse> {
     const response = await fetch(`${this.apiBaseUrl}/nortus-v1/dashboard`, {
       method: "GET",
-      headers: this.headers,
+      headers: await this.getAuthHeaders(),
       next: {
         revalidate: 120,
         tags: [DASHBOARD_CACHE_TAG],
@@ -175,7 +180,7 @@ export class HttpNortusRepository implements INortusRepository {
   async getMapLocations(): Promise<GetMapLocationsResponse> {
     const response = await fetch(`${this.apiBaseUrl}/map/locations`, {
       method: "GET",
-      headers: this.headers,
+      headers: await this.getAuthHeaders(),
       next: {
         revalidate: 120,
         tags: [MAP_LOCATIONS_CACHE_TAG],
@@ -196,7 +201,7 @@ export class HttpNortusRepository implements INortusRepository {
       `${this.apiBaseUrl}/nortus-v1/simulador-planos`,
       {
         method: "GET",
-        headers: this.headers,
+        headers: await this.getAuthHeaders(),
         next: {
           revalidate: 120,
           tags: [PLAN_SIMULATOR_CACHE_TAG],
@@ -216,7 +221,7 @@ export class HttpNortusRepository implements INortusRepository {
   async getChatHistory(): Promise<GetChatHistoryResponse> {
     const response = await fetch(`${this.apiBaseUrl}/nortus-v1/chat/`, {
       method: "GET",
-      headers: this.headers,
+      headers: await this.getAuthHeaders(),
       cache: "no-store",
     });
 
