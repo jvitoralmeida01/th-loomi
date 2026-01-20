@@ -5,13 +5,31 @@ import Select from "./Select";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import SearchIcon from "@/assets/icons/search.svg";
 import { useDebouncedCallback } from "use-debounce";
-import {
-  clientStatusFilterOptions,
-  clientTypeFilterOptions,
-  clientRegionFilterOptions,
-} from "../_utils/mock";
 
-export default function ClientsTableFilters() {
+interface ClientsTableFiltersProps {
+  statusValues: string[];
+  typeValues: string[];
+  regionValues: string[];
+}
+
+export default function ClientsTableFilters(props: ClientsTableFiltersProps) {
+  const { statusValues, typeValues, regionValues } = props;
+
+  const statusOptions = statusValues.map((status) => ({
+    label: status,
+    value: status === "Todos" ? '' : status,
+  }));
+
+  const typeOptions = typeValues.map((type) => ({
+    label: type,
+    value: type === "Todos" ? '' : type,
+  }));
+
+  const regionOptions = regionValues.map((region) => ({
+    label: region,
+    value: region === "Todos" ? '' : region,
+  }));
+
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -64,19 +82,19 @@ export default function ClientsTableFilters() {
       <Select
         name="status"
         defaultValue={defaultStatus}
-        options={clientStatusFilterOptions}
+        options={statusOptions}
         onChange={(e) => handleFilter(e.target.value, defaultType, defaultRegion)}
       />
       <Select
         name="type"
         defaultValue={defaultType}
-        options={clientTypeFilterOptions}
+        options={typeOptions}
         onChange={(e) => handleFilter(defaultStatus, e.target.value, defaultRegion)}
       />
       <Select
         name="region"
         defaultValue={defaultRegion}
-        options={clientRegionFilterOptions}
+        options={regionOptions}
         onChange={(e) => handleFilter(defaultStatus, defaultType, e.target.value)}
       />
     </div>

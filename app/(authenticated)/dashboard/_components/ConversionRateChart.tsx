@@ -4,12 +4,21 @@ import { useMemo } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { ApexOptions } from "apexcharts";
-import { conversionRateData, conversionRateCategories } from "../_utils/mock";
 import chevronRightIcon from "@/assets/icons/chevron_right.svg";
+import { KpiEvolutionData } from "@/src/domain/entities/dashboard";
+
+interface ConversionRateChartProps {
+  labels: string[];
+  data: KpiEvolutionData;
+}
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-export default function ConversionRateChart() {
+export default function ConversionRateChart({ labels, data }: ConversionRateChartProps) {
+  const visibleLabels = useMemo(() => labels.slice(0, 6), [labels]);
+  const visibleData = useMemo(() => data.data.slice(0, 6), [data]);
+  const max = useMemo(() => Math.max(0, ...visibleData), [visibleData]);
+
   const chartOptions: ApexOptions = useMemo(
     () => ({
       chart: {
@@ -43,7 +52,7 @@ export default function ConversionRateChart() {
       },
       dataLabels: { enabled: false },
       xaxis: {
-        categories: conversionRateCategories,
+        categories: visibleLabels,
         labels: {
           style: {
             colors: "var(--color-neutral-100)",
@@ -56,7 +65,7 @@ export default function ConversionRateChart() {
       },
       yaxis: {
         min: 0,
-        max: 125,
+        max: max,
         tickAmount: 5,
         labels: {
           style: {
@@ -89,7 +98,7 @@ export default function ConversionRateChart() {
               font-weight: 600;
               font-family: var(--font-montserrat), sans-serif;
             ">
-              ${value} novos clientes
+              ${value}
             </div>
           `;
         },
@@ -103,17 +112,17 @@ export default function ConversionRateChart() {
         },
       },
     }),
-    []
+    [visibleLabels, max]
   );
 
   const series = useMemo(
     () => [
       {
-        name: conversionRateData.name,
-        data: conversionRateData.data,
+        name: data.name,
+        data: visibleData,
       },
     ],
-    []
+    [data.name, visibleData]
   );
 
   return (

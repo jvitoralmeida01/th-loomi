@@ -3,8 +3,10 @@ import { INortusRepository } from "@/src/application/repositories.interface/INor
 import { GetAllTicketsResponse, GetTicketByIdResponse } from "@/src/domain/responses/tickets";
 import { revalidateTicketsCache } from "../utils/revalidateTickets";
 import { CreateTicketRequest, UpdateTicketRequest } from "@/src/domain/requests/tickets";
+import { GetDashboardResponse } from "@/src/domain/responses/dashboard";
 
 export const TICKETS_CACHE_TAG = "tickets";
+export const DASHBOARD_CACHE_TAG = "dashboard";
 
 @injectable()
 export class HttpNortusRepository implements INortusRepository {
@@ -92,6 +94,25 @@ export class HttpNortusRepository implements INortusRepository {
     }
 
     revalidateTicketsCache({ eagerly: true });
+  }
+
+  async getDashboardData(): Promise<GetDashboardResponse> {
+    const response = await fetch(`${this.apiBaseUrl}/nortus-v1/dashboard`, {
+      method: "GET",
+      headers: this.headers,
+      next: {
+        revalidate: 120,
+        tags: [DASHBOARD_CACHE_TAG],
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch dashboard data: ${response.status} - ${response.statusText}`
+      );
+    }
+
+    return response.json();
   }
 }
 

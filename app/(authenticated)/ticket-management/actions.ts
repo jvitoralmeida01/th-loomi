@@ -10,7 +10,6 @@ import { GetInfoCardsDataOutput } from "@/src/application/useCases/GetInfoCardsD
 import { CreateTicketInput } from "@/src/application/useCases/CreateTicketUseCase";
 import { GetTicketByIdOutput } from "@/src/application/useCases/GetTicketByIdUseCase";
 import { UpdateTicketInput } from "@/src/application/useCases/UpdateTicketUseCase";
-import { revalidateTicketsCache } from "@/src/infrastructure/utils/revalidateTickets";
 
 export type FeedbackType = "success" | "error";
 

@@ -1,9 +1,5 @@
 import Badge from "@/app/_components/Badge";
-import {
-  Client,
-  insuranceTypeLabels,
-  clientStatusLabels,
-} from "../_utils/mock";
+import { Client } from "@/src/domain/entities/dashboard";
 
 interface ClientsTableRowProps {
   client: Client;
@@ -40,20 +36,20 @@ export default function ClientsTableRow({
       </td>
       <td
         className="px-2 py-4 font-montserrat font-semibold text-xs text-neutral-100 overflow-hidden text-ellipsis"
-        title={insuranceTypeLabels[client.insuranceType]}
+        title={client.secureType}
       >
-        {insuranceTypeLabels[client.insuranceType]}
+        {client.secureType}
       </td>
       <td
         className="px-2 py-4 font-montserrat font-semibold text-xs text-neutral-100 overflow-hidden text-ellipsis"
-        title={formatCurrency(client.monthlyValue)}
+        title={formatCurrency(client.monthValue)}
       >
-        {formatCurrency(client.monthlyValue)}
+        {formatCurrency(client.monthValue)}
       </td>
-      <td className="px-2 py-4" title={clientStatusLabels[client.status]}>
+      <td className="px-2 py-4" title={client.status}>
         <Badge
           variant={client.status}
-          label={clientStatusLabels[client.status]}
+          label={client.status}
         />
       </td>
       <td
@@ -64,9 +60,9 @@ export default function ClientsTableRow({
       </td>
       <td
         className="px-2 py-4 font-montserrat font-semibold text-xs text-neutral-100 overflow-hidden text-ellipsis"
-        title={client.region}
+        title={client.location}
       >
-        {client.region}
+        {client.location}
       </td>
     </tr>
   );

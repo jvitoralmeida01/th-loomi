@@ -41,7 +41,6 @@ export default async function TicketManagementPage({
   const page = parseInt(await params?.page || "1", 10);
   const showNewTicketModal = Boolean(await params?.newTicket);
   const editTicketId = await params?.editTicket || "";
-  const formData: CreateTicketInput | null = (await params?.formData) ? JSON.parse(decodeURIComponent(await params?.formData || "{}")) : null;
 
   const [
     { tickets: paginatedTickets, totalPages, currentPage },

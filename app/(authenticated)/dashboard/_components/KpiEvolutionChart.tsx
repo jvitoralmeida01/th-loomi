@@ -3,7 +3,7 @@
 import { useState, useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { ApexOptions } from "apexcharts";
-import { kpiEvolutionData, kpiCategories } from "../_utils/mock";
+import { KpiEvolutionData } from "@/src/domain/entities/dashboard";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -16,14 +16,29 @@ const kpiTabs: { key: KpiType; label: string }[] = [
   { key: "arpu", label: "ARPU" },
 ];
 
-export default function KpiEvolutionChart() {
+interface KpiEvolutionChartProps {
+  labels: string[];
+  arpu: KpiEvolutionData;
+  conversionRate: KpiEvolutionData;
+  churn: KpiEvolutionData;
+  retention: KpiEvolutionData;
+}
+
+export default function KpiEvolutionChart({ labels, arpu, conversionRate, churn, retention }: KpiEvolutionChartProps) {
   const [activeKpi, setActiveKpi] = useState<KpiType>("arpu");
 
   const handleTabClick = useCallback((kpi: KpiType) => {
     setActiveKpi(kpi);
   }, []);
 
-  const currentData = kpiEvolutionData[activeKpi];
+  const kpiDataMap = useMemo(() => ({
+    retention,
+    conversion: conversionRate,
+    churn,
+    arpu,
+  }), [retention, conversionRate, churn, arpu]);
+
+  const currentData = kpiDataMap[activeKpi];
   const isArpu = activeKpi === "arpu";
 
   const chartOptions: ApexOptions = useMemo(
@@ -63,7 +78,7 @@ export default function KpiEvolutionChart() {
       },
       dataLabels: { enabled: false },
       xaxis: {
-        categories: kpiCategories,
+        categories: labels,
         labels: {
           style: {
             colors: "var(--color-neutral-100)",
@@ -130,7 +145,7 @@ export default function KpiEvolutionChart() {
         colors: ["var(--color-neutral-100)"],
       },
     }),
-    [isArpu]
+    [isArpu, labels]
   );
 
   const series = useMemo(
