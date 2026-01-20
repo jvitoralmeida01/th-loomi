@@ -2,18 +2,21 @@
 
 import { usePlanSimulatorSelector } from "@/app/(authenticated)/plan-simulator/_store/hooks";
 import {
-  plans,
   calculatePlanPrice,
   calculateConversionRate,
   calculateRoi,
-  formatCurrency,
-} from "../_utils/mock";
+} from "../_utils/calculations";
+import { formatCurrency } from "../_utils/formatters";
 import { PlanSimulatorRootState } from "@/app/(authenticated)/plan-simulator/_store/planSimulatorStore";
 
 export default function PlanIndicators() {
-  const { vehicleValue, clientAge, additionalCoverages } = usePlanSimulatorSelector(
+  const { plans, vehicleValue, clientAge, additionalCoverages } = usePlanSimulatorSelector(
     (state: PlanSimulatorRootState) => state.planSimulator
   );
+
+  if (plans.length === 0) {
+    return null;
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -79,4 +82,3 @@ export default function PlanIndicators() {
     </div>
   );
 }
-

@@ -1,59 +1,5 @@
-import { PlanType, AdditionalCoverage } from "@/app/(authenticated)/plan-simulator/_store/planSimulatorSlice";
-
-export interface Plan {
-  id: PlanType;
-  name: string;
-  basePrice: number;
-  recommended?: boolean;
-  benefits: string[];
-  baseConversionRate: number;
-  baseRoi: number;
-}
-
-export const plans: Plan[] = [
-  {
-    id: "basic",
-    name: "Básico",
-    basePrice: 89.9,
-    benefits: ["Assistência 24h", "Guincho até 100km", "Cobertura básica"],
-    baseConversionRate: 75,
-    baseRoi: 80,
-  },
-  {
-    id: "intermediate",
-    name: "Intermediário",
-    basePrice: 145.9,
-    benefits: ["Tudo do básico", "Carro reserva", "Vidros"],
-    baseConversionRate: 48,
-    baseRoi: 114,
-  },
-  {
-    id: "premium",
-    name: "Premium",
-    basePrice: 225.9,
-    recommended: true,
-    benefits: [
-      "Tudo do intermediário",
-      "Cobertura total",
-      "Assistência premium",
-      "Sem franquia",
-    ],
-    baseConversionRate: 25,
-    baseRoi: 176,
-  },
-];
-
-export const vehicleValueRange = {
-  min: 10000,
-  max: 500000,
-  step: 1000,
-};
-
-export const clientAgeRange = {
-  min: 18,
-  max: 90,
-  step: 1,
-};
+import { AdditionalCoverage } from "@/app/(authenticated)/plan-simulator/_store/planSimulatorSlice";
+import { Plan } from "@/src/domain/entities/planSimulator";
 
 export function calculatePlanPrice(
   basePrice: number,
@@ -77,17 +23,6 @@ export function calculatePlanPrice(
     .reduce((total, coverage) => total + coverage.price, 0);
 
   return Math.round((basePlanPrice + additionalCoverageTotal) * 100) / 100;
-}
-
-export function formatCurrency(value: number): string {
-  return value.toLocaleString("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  });
-}
-
-export function getPlanById(planId: PlanType): Plan | undefined {
-  return plans.find((plan) => plan.id === planId);
 }
 
 export function calculateConversionRate(
@@ -122,5 +57,9 @@ export function calculateRoi(
   const roi = baseRoi * priceRatio * vehicleRiskFactor * ageRiskFactor;
 
   return Math.max(0, Math.min(300, Math.round(roi * 10) / 10));
+}
+
+export function getPlanById(plans: Plan[], planId: string): Plan | undefined {
+  return plans.find((plan) => plan.id === planId);
 }
 

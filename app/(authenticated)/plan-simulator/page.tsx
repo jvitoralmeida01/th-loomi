@@ -5,10 +5,15 @@ import ClientAgeSlider from "./_components/ClientAgeSlider";
 import AdditionalCoverages from "./_components/AdditionalCoverages";
 import IncludedBenefits from "./_components/IncludedBenefits";
 import PlanIndicators from "./_components/PlanIndicators";
+import StoreInitializer from "./_store/StoreInitializer";
+import { getPlanSimulatorData } from "./actions";
 
-export default function PlanSimulatorPage() {
+export default async function PlanSimulatorPage() {
+  const { data } = await getPlanSimulatorData();
+
   return (
     <div className="py-8 px-32 max-w-full">
+      <StoreInitializer initialData={{ plans: data.plans }} />
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <Card className="lg:col-span-2 py-6 px-5">
           <div className="flex flex-col gap-8">
@@ -31,7 +36,7 @@ export default function PlanSimulatorPage() {
 
         <div className="flex flex-col gap-8">
           <Card className="py-6 px-8">
-            <IncludedBenefits />
+            <IncludedBenefits benefits={data.includedBenefits} />
           </Card>
 
           <Card className="py-6 px-8">

@@ -1,6 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Plan, PlanType } from "@/src/domain/entities/planSimulator";
+import {
+  defaultAdditionalCoverages,
+  defaultVehicleValue,
+  defaultClientAge,
+  defaultSelectedPlan,
+} from "../_utils/config";
 
-export type PlanType = "basic" | "intermediate" | "premium";
+export type { PlanType } from "@/src/domain/entities/planSimulator";
 
 export interface AdditionalCoverage {
   id: number;
@@ -10,48 +17,51 @@ export interface AdditionalCoverage {
 }
 
 export interface PlanSimulatorState {
+  plans: Plan[];
   selectedPlan: PlanType;
   vehicleValue: number;
   clientAge: number;
   additionalCoverages: AdditionalCoverage[];
+  isInitialized: boolean;
+}
+
+export interface InitializeStatePayload {
+  plans: Plan[];
+  selectedPlan?: PlanType;
+  vehicleValue?: number;
+  clientAge?: number;
+  additionalCoverages?: AdditionalCoverage[];
 }
 
 const initialState: PlanSimulatorState = {
-  selectedPlan: "intermediate",
-  vehicleValue: 50000,
-  clientAge: 28,
-  additionalCoverages: [
-    {
-      id: 0,
-      name: "Cobertura contra roubo e furto",
-      price: 25,
-      selected: true,
-    },
-    {
-      id: 1,
-      name: "Danos por colisão",
-      price: 35,
-      selected: true,
-    },
-    {
-      id: 2,
-      name: "Cobertura contra incêndio",
-      price: 20,
-      selected: true,
-    },
-    {
-      id: 3,
-      name: "Fenômenos naturais (granizo, enchente)",
-      price: 30,
-      selected: false,
-    },
-  ],
+  plans: [],
+  selectedPlan: defaultSelectedPlan,
+  vehicleValue: defaultVehicleValue,
+  clientAge: defaultClientAge,
+  additionalCoverages: defaultAdditionalCoverages,
+  isInitialized: false,
 };
 
 const planSimulatorSlice = createSlice({
   name: "planSimulator",
   initialState,
   reducers: {
+    initializeState: (state, action: PayloadAction<InitializeStatePayload>) => {
+      state.plans = action.payload.plans;
+      if (action.payload.selectedPlan !== undefined) {
+        state.selectedPlan = action.payload.selectedPlan;
+      }
+      if (action.payload.vehicleValue !== undefined) {
+        state.vehicleValue = action.payload.vehicleValue;
+      }
+      if (action.payload.clientAge !== undefined) {
+        state.clientAge = action.payload.clientAge;
+      }
+      if (action.payload.additionalCoverages !== undefined) {
+        state.additionalCoverages = action.payload.additionalCoverages;
+      }
+      state.isInitialized = true;
+    },
     setSelectedPlan: (state, action: PayloadAction<PlanType>) => {
       state.selectedPlan = action.payload;
     },
@@ -72,8 +82,12 @@ const planSimulatorSlice = createSlice({
   },
 });
 
-export const { setSelectedPlan, setVehicleValue, setClientAge, toggleCoverage } =
-  planSimulatorSlice.actions;
+export const {
+  initializeState,
+  setSelectedPlan,
+  setVehicleValue,
+  setClientAge,
+  toggleCoverage,
+} = planSimulatorSlice.actions;
 
 export default planSimulatorSlice.reducer;
-

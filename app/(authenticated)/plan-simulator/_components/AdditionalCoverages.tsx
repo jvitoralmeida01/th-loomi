@@ -1,9 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { usePlanSimulatorDispatch, usePlanSimulatorSelector } from "@/app/(authenticated)/plan-simulator/_store/hooks";
+import {
+  usePlanSimulatorDispatch,
+  usePlanSimulatorSelector,
+} from "@/app/(authenticated)/plan-simulator/_store/hooks";
 import { toggleCoverage } from "@/app/(authenticated)/plan-simulator/_store/planSimulatorSlice";
-import { formatCurrency } from "../_utils/mock";
+import { formatCurrency } from "../_utils/formatters";
 import checkIcon from "@/assets/icons/check.svg";
 import { PlanSimulatorRootState } from "@/app/(authenticated)/plan-simulator/_store/planSimulatorStore";
 
@@ -63,4 +66,3 @@ export default function AdditionalCoverages() {
     </div>
   );
 }
-
