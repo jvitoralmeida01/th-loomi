@@ -1,24 +1,26 @@
+import { TicketPriority, TicketStatus } from "@/src/domain/entities/tickets";
+
 interface BadgeProps {
   label: string;
-  variant: "urgent" | "medium" | "low" | "open" | "in-progress" | "resolved" | "active" | "pending";
+  variant: TicketPriority | TicketStatus | "Ativo" | "Pendente";
   className?: string;
 }
 
 export default function Badge({ label, variant, className = "" }: BadgeProps) {
   const variantStyles = {
-    urgent: "bg-priority-high text-neutral-100",
-    medium: "bg-priority-neutral text-background",
-    low: "bg-priority-low text-background",
-    open: "bg-info-neutral text-background",
-    "in-progress": "bg-info-warn text-background",
-    resolved: "bg-neutral-400 text-background",
-    active: "bg-info-neutral text-background",
-    pending: "bg-info-warn text-background",
+    'Urgente': "bg-priority-high text-neutral-100",
+    'Média': "bg-priority-neutral text-background",
+    'Baixa': "bg-priority-low text-background",
+    'Aberto': "bg-info-neutral text-background",
+    'Em andamento': "bg-info-warn text-background",
+    'Fechado': "bg-neutral-500 text-neutral-100",
+    'Ativo': "bg-info-neutral text-background",
+    'Pendente': "bg-info-warn text-background",
   };
 
   return (
     <div
-      className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium whitespace-nowrap max-w-full ${variantStyles[variant]} ${className}`}
+      className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-Média whitespace-nowrap max-w-full ${variantStyles[variant]} ${className}`}
     >
       <span className="overflow-hidden text-ellipsis">{label}</span>
     </div>

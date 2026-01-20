@@ -1,74 +1,27 @@
 "use server";
 
 import routes from "@/app/_utils/routes";
-import { mockTickets } from "./_utils/mock";
 import { redirect } from "next/navigation";
+import { container } from "@/di/container";
+import { Ticket, TicketPriority, TicketPriorityValues, TicketStatus } from "@/src/domain/entities/tickets";
+import { TicketManagementService } from "@/src/application/services/TicketManagementService";
+import { GetAllTicketsInput, GetAllTicketsOutput } from "@/src/application/useCases/GetAllTicketsUseCase";
+import { GetAllAssigneesOutput } from "@/src/application/useCases/GetAllAssigneesUseCase";
+import { GetInfoCardsDataOutput } from "@/src/application/useCases/GetInfoCardsDataUseCase";
 
-export type Ticket = typeof mockTickets[0];
+export async function getTickets(params: Readonly<GetAllTicketsInput>): Promise<GetAllTicketsOutput> {
+  const ticketManagementService = container.resolve(TicketManagementService);
+  return await ticketManagementService.getAllTickets(params);
+};
 
-export interface GetTicketsParams {
-  query?: string;
-  status?: string;
-  priority?: string;
-  assignee?: string;
-  page?: number;
-  itemsPerPage?: number;
-}
+export async function getAllAssignees(): Promise<GetAllAssigneesOutput> {
+  const ticketManagementService = container.resolve(TicketManagementService);
+  return await ticketManagementService.getAllAssignees();
+};
 
-export interface GetTicketsResult {
-  tickets: Ticket[];
-  total: number;
-  totalPages: number;
-  currentPage: number;
-}
-
-export async function getTickets({
-  query = "",
-  status,
-  priority,
-  assignee,
-  page = 1,
-  itemsPerPage = 5,
-}: Readonly<GetTicketsParams>): Promise<GetTicketsResult> {
-  const normalizedQuery = query.trim();
-  const hasFilters = status || priority || assignee;
-
-  const filteredTickets = mockTickets.filter((ticket) => {
-    if (!normalizedQuery && !hasFilters) return true;
-
-    const isQueryMatch = normalizedQuery && (
-      ticket.id.toLowerCase().includes(normalizedQuery.toLowerCase())
-      || ticket.clientName.toLowerCase().includes(normalizedQuery.toLowerCase())
-      || ticket.clientEmail.toLowerCase().includes(normalizedQuery.toLowerCase())
-      || ticket.subject.toLowerCase().includes(normalizedQuery.toLowerCase())
-    );
-
-    if (normalizedQuery && !hasFilters) return isQueryMatch;
-
-    const isStatusMatch = status ? ticket?.status === status : true;
-    const isPriorityMatch = priority ? ticket?.priority === priority : true;
-    const isAssigneeMatch = assignee ? ticket?.assignee === assignee : true;
-
-    const filtersMatch = isStatusMatch && isPriorityMatch && isAssigneeMatch;
-
-    if (!normalizedQuery && hasFilters) return filtersMatch;
-
-    return isQueryMatch && filtersMatch;
-  });
-
-  const total = filteredTickets.length;
-  const totalPages = Math.max(1, Math.ceil(total / itemsPerPage));
-  const currentPage = Math.max(1, Math.min(page, totalPages));
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const paginatedTickets = filteredTickets.slice(startIndex, endIndex);
-
-  return {
-    tickets: paginatedTickets,
-    total,
-    totalPages,
-    currentPage,
-  };
+export async function getInfoCardsData(): Promise<GetInfoCardsDataOutput> {
+  const ticketManagementService = container.resolve(TicketManagementService);
+  return await ticketManagementService.getInfoCardsData();
 };
 
 export interface CreateTicketParams {
@@ -98,30 +51,21 @@ export async function createTicket(params: CreateTicketParams) {
     throw new Error("Todos os campos são obrigatórios");
   }
 
-  const lastTicketId = mockTickets[mockTickets.length - 1]?.id || "TK000";
-  const lastNumber = parseInt(lastTicketId.replace("TK", ""), 10);
-  const nextId = `TK${String(lastNumber + 1).padStart(3, "0")}`;
+  const randomTicketId = `TK${Math.floor(1000 + Math.random() * 9000)}`;
 
-  const today = new Date();
-  const day = String(today.getDate()).padStart(2, "0");
-  const month = String(today.getMonth() + 1).padStart(2, "0");
-  const year = today.getFullYear();
-  const createdAt = `${day}/${month}/${year}`;
-
-  if (!["urgent", "medium", "low"].includes(priority)) {
+  if (!TicketPriorityValues.includes(priority as TicketPriority)) {
     throw new Error("Prioridade inválida");
   }
 
-  const newTicket: Ticket = {
-    id: nextId,
-    priority: priority as "urgent" | "medium" | "low",
+  const newTicket: Partial<Ticket> = {
+    id: randomTicketId,
+    priority: priority as TicketPriority,
     clientName: clientName.trim(),
     clientEmail: email.trim(),
     subject: subject.trim(),
-    status: "open" as const,
-    createdAt,
+    status: "Aberto",
     assignee: assignee.trim(),
-  } as Ticket;
+  };
 
   const errorFeedback: NewTicketFeedbackType = "error";
   const feedbackType: NewTicketFeedbackType = "success";

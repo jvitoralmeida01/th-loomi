@@ -5,10 +5,11 @@ import Select from "@/app/(authenticated)/ticket-management/_components/Select";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import SearchIcon from "@/assets/icons/search.svg";
 import { useDebouncedCallback } from "use-debounce";
-import { mockStatusOptions, mockPriorityOptions, mockAssigneeOptions } from "../_utils/mock";
+import { mockAssigneeOptions } from "../_utils/mock";
 import clearParams from "../../../_utils/clearNewTicketParams";
+import { TicketPriority, TicketPriorityValues, TicketStatus, TicketStatusValues } from "@/src/domain/entities/tickets";
 
-export default function Filters() {
+export default function Filters({ assignees }: { assignees: string[] }) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -17,6 +18,39 @@ export default function Filters() {
   const defaultStatus = searchParams.get("status")?.toString() || "";
   const defaultPriority = searchParams.get("priority")?.toString() || "";
   const defaultAssignee = searchParams.get("assignee")?.toString() || "";
+
+  const statusOptions = [
+    {
+      label: "Todos os status",
+      value: "",
+    },
+    ...TicketStatusValues.map((status: TicketStatus) => ({
+      label: status,
+      value: status,
+    }))
+  ];
+
+  const priorityOptions = [
+    {
+      label: "Todos as prioridades",
+      value: "",
+    },
+    ...TicketPriorityValues.map((priority: TicketPriority) => ({
+      label: priority,
+      value: priority,
+    }))
+  ];
+
+  const assigneeOptions = [
+    {
+      label: "Todos os responsáveis",
+      value: "",
+    },
+    ...assignees.map((assignee: string) => ({
+      label: assignee,
+      value: assignee,
+    })),
+  ];
 
   const handleSearch = useDebouncedCallback((query: string) => {
     const params = new URLSearchParams(searchParams);
@@ -64,19 +98,19 @@ export default function Filters() {
         <Select
           name="status"
           defaultValue={defaultStatus}
-          options={mockStatusOptions}
+          options={statusOptions}
           onChange={(e) => handleFilter(e.target.value, defaultPriority, defaultAssignee)}
         />
         <Select
           name="priority"
           defaultValue={defaultPriority}
-          options={mockPriorityOptions}
+          options={priorityOptions}
           onChange={(e) => handleFilter(defaultStatus, e.target.value, defaultAssignee)}
         />
         <Select
           name="assignee"
           defaultValue={defaultAssignee}
-          options={mockAssigneeOptions}
+          options={assigneeOptions}
           onChange={(e) => handleFilter(defaultStatus, defaultPriority, e.target.value)}
         />
       </div>

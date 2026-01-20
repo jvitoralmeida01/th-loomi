@@ -1,12 +1,12 @@
 import InfoCard from "./_components/InfoCard";
-import TableRow from "../../_components/TableRow";
+import TableRow from "./_components/TableRow";
 import Pagination from "../../_components/Pagination";
 import openTicketIcon from "@/assets/icons/open_ticket.svg";
 import incomingIcon from "@/assets/icons/incoming.svg";
 import checkboxIcon from "@/assets/icons/checkbox.svg";
 import clockIcon from "@/assets/icons/clock.svg";
 import Filters from "./_components/Filters";
-import { createTicket, CreateTicketParams, getTickets, NewTicketFeedbackType } from "./actions";
+import { createTicket, CreateTicketParams, getTickets, getAllAssignees, getInfoCardsData } from "./actions";
 import { mockOpenTickets, mockInProgressTickets, mockResolvedToday, mockAverageTime } from "./_utils/mock";
 import Card from "@/app/_components/Card";
 import Modal from "@/app/_components/Modal";
@@ -39,14 +39,22 @@ export default async function TicketManagementPage({
   const showNewTicketModal = Boolean(await params?.newTicket);
   const formData: CreateTicketParams | null = (await params?.formData) ? JSON.parse(decodeURIComponent(await params?.formData || "{}")) : null;
 
-  const { tickets: paginatedTickets, totalPages, currentPage } = await getTickets({
-    query,
-    status,
-    priority,
-    assignee,
-    page,
-    itemsPerPage: ITEMS_PER_PAGE,
-  });
+  const [
+    { tickets: paginatedTickets, totalPages, currentPage },
+    { assignees },
+    infoCardsData
+  ] = await Promise.all([
+    getTickets({
+      query,
+      status,
+      priority,
+      assignee,
+      page,
+      itemsPerPage: ITEMS_PER_PAGE,
+    }),
+    getAllAssignees(),
+    getInfoCardsData()
+  ]);
 
   if (formData) {
     await createTicket(formData);
@@ -57,26 +65,30 @@ export default async function TicketManagementPage({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <InfoCard
           title="Tickets Abertos"
-          value={mockOpenTickets.toString()}
+          value={infoCardsData.openedTickets.toString()}
           icon={openTicketIcon}
         />
         <InfoCard
           title="Em andamento"
-          value={mockInProgressTickets.toString()}
+          value={infoCardsData.inProgressTickets.toString()}
           icon={incomingIcon}
         />
         <InfoCard
           title="Resolvidos hoje"
-          value={mockResolvedToday.toString()}
+          value={infoCardsData.resolvedTodayTickets.toString()}
           icon={checkboxIcon}
         />
-        <InfoCard title="Tempo Médio" value={mockAverageTime} icon={clockIcon} />
+        <InfoCard
+          title="Tempo Médio"
+          value={infoCardsData.averageTime.toString()}
+          icon={clockIcon}
+        />
       </div>
 
       <Card className="flex flex-col gap-2 p-6">
         <h2 className="text-md font-montserrat font-bold text-neutral-100">Lista de Tickets</h2>
 
-        <Filters />
+        <Filters assignees={assignees} />
 
         <div className="overflow-x-auto rounded-xl bg-neutral-100/5 px-4 py-1 mt-2 pb-4">
           <table className="w-full table-fixed text-left">
@@ -137,3 +149,4 @@ export default async function TicketManagementPage({
     </div>
   );
 }
+
