@@ -22,7 +22,9 @@ export default function SidebarButton({
     <Link
       href={path}
       className={`px-4 py-3.5 rounded-lg flex items-center justify-center transition-all duration-300 ${
-        isActive ? "bg-primary glow-primary hover:shadow-none" : "bg-neutral-100/5 hover:bg-neutral-100/10"
+        isActive
+          ? "bg-primary glow-primary hover:shadow-none"
+          : "bg-neutral-100/5 hover:bg-neutral-100/10"
       }`}
       title={label}
     >
@@ -30,4 +32,3 @@ export default function SidebarButton({
     </Link>
   );
 }
-

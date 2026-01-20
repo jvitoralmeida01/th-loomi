@@ -16,4 +16,3 @@ export default async function UnauthenticatedLayout({
 
   return <>{children}</>;
 }
-

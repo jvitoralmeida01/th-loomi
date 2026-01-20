@@ -24,19 +24,28 @@ interface KpiEvolutionChartProps {
   retention: KpiEvolutionData;
 }
 
-export default function KpiEvolutionChart({ labels, arpu, conversionRate, churn, retention }: KpiEvolutionChartProps) {
+export default function KpiEvolutionChart({
+  labels,
+  arpu,
+  conversionRate,
+  churn,
+  retention,
+}: KpiEvolutionChartProps) {
   const [activeKpi, setActiveKpi] = useState<KpiType>("arpu");
 
   const handleTabClick = useCallback((kpi: KpiType) => {
     setActiveKpi(kpi);
   }, []);
 
-  const kpiDataMap = useMemo(() => ({
-    retention,
-    conversion: conversionRate,
-    churn,
-    arpu,
-  }), [retention, conversionRate, churn, arpu]);
+  const kpiDataMap = useMemo(
+    () => ({
+      retention,
+      conversion: conversionRate,
+      churn,
+      arpu,
+    }),
+    [retention, conversionRate, churn, arpu]
+  );
 
   const currentData = kpiDataMap[activeKpi];
   const isArpu = activeKpi === "arpu";
@@ -181,9 +190,13 @@ export default function KpiEvolutionChart({ labels, arpu, conversionRate, churn,
         </div>
       </div>
       <div className="flex-1 min-h-[150px]">
-        <Chart options={chartOptions} series={series} type="area" height="100%" />
+        <Chart
+          options={chartOptions}
+          series={series}
+          type="area"
+          height="100%"
+        />
       </div>
     </div>
   );
 }
-

@@ -10,7 +10,12 @@ interface ClientsTableProps {
   regionValues: string[];
 }
 
-export default function ClientsTable({ clients, statusValues, typeValues, regionValues }: ClientsTableProps) {
+export default function ClientsTable({
+  clients,
+  statusValues,
+  typeValues,
+  regionValues,
+}: ClientsTableProps) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
@@ -18,7 +23,11 @@ export default function ClientsTable({ clients, statusValues, typeValues, region
           Clientes ativos
         </h2>
 
-        <ClientsTableFilters statusValues={statusValues} typeValues={typeValues} regionValues={regionValues} />
+        <ClientsTableFilters
+          statusValues={statusValues}
+          typeValues={typeValues}
+          regionValues={regionValues}
+        />
       </div>
 
       <div className="overflow-x-auto rounded-xl bg-neutral-100/5 px-4 py-1 mt-2 pb-4">

@@ -24,7 +24,11 @@ export default function Select({
   return (
     <div className="relative">
       <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-        <Image src={ArrowDownIcon} alt="Select's trailing Arrow Down Icon" className="w-3 h-3" />
+        <Image
+          src={ArrowDownIcon}
+          alt="Select's trailing Arrow Down Icon"
+          className="w-3 h-3"
+        />
       </div>
       <select
         name={name}

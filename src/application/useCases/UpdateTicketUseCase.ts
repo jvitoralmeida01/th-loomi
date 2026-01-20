@@ -1,6 +1,11 @@
 import { injectable, inject } from "tsyringe";
 import { INortusRepository } from "@/src/application/repositories.interface/INortusRepository";
-import { TicketPriority, TicketPriorityValues, TicketStatus, TicketStatusValues } from "@/src/domain/entities/tickets";
+import {
+  TicketPriority,
+  TicketPriorityValues,
+  TicketStatus,
+  TicketStatusValues,
+} from "@/src/domain/entities/tickets";
 import { UpdateTicketRequest } from "@/src/domain/requests/tickets";
 
 export interface UpdateTicketInput {
@@ -26,7 +31,8 @@ export class UpdateTicketUseCase {
   ) {}
 
   async execute(input: UpdateTicketInput): Promise<UpdateTicketOutput> {
-    const { uuid, clientName, email, priority, assignee, subject, status } = input;
+    const { uuid, clientName, email, priority, assignee, subject, status } =
+      input;
 
     const validationError = this._validateInput(input);
     if (validationError) {
@@ -61,7 +67,10 @@ export class UpdateTicketUseCase {
       return "ID do ticket é obrigatório";
     }
 
-    if (priority && !TicketPriorityValues.includes(priority as TicketPriority)) {
+    if (
+      priority &&
+      !TicketPriorityValues.includes(priority as TicketPriority)
+    ) {
       return "Prioridade inválida";
     }
 
@@ -72,7 +81,9 @@ export class UpdateTicketUseCase {
     return null;
   }
 
-  _buildUpdateRequest(fields: Omit<UpdateTicketInput, "uuid">): UpdateTicketRequest {
+  _buildUpdateRequest(
+    fields: Omit<UpdateTicketInput, "uuid">
+  ): UpdateTicketRequest {
     const request: UpdateTicketRequest = {};
 
     if (fields.clientName?.trim()) {
@@ -102,4 +113,3 @@ export class UpdateTicketUseCase {
     return request;
   }
 }
-

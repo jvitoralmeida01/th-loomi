@@ -21,10 +21,7 @@ export default function ClientsTableRow({
     <tr
       className={`border-b border-glass-edge hover:bg-neutral-100/10 transition-colors ${isLastRow ? "border-b-0" : "border-b"}`}
     >
-      <td
-        className="px-2 py-4"
-        title={`${client.name} - ${client.email}`}
-      >
+      <td className="px-2 py-4" title={`${client.name} - ${client.email}`}>
         <div className="flex flex-col">
           <span className="font-montserrat font-semibold text-xs text-neutral-100 overflow-hidden text-ellipsis">
             {client.name}
@@ -47,10 +44,7 @@ export default function ClientsTableRow({
         {formatCurrency(client.monthValue)}
       </td>
       <td className="px-2 py-4" title={client.status}>
-        <Badge
-          variant={client.status}
-          label={client.status}
-        />
+        <Badge variant={client.status} label={client.status} />
       </td>
       <td
         className="px-2 py-4 font-montserrat font-semibold text-xs text-neutral-100 overflow-hidden text-ellipsis"
@@ -67,4 +61,3 @@ export default function ClientsTableRow({
     </tr>
   );
 }
-

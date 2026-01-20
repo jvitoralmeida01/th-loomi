@@ -28,7 +28,9 @@ container.register(UpdateTicketUseCase, { useClass: UpdateTicketUseCase });
 container.register(LoginUseCase, { useClass: LoginUseCase });
 container.register(GetUserInfoUseCase, { useClass: GetUserInfoUseCase });
 container.register(GetDashboardUseCase, { useClass: GetDashboardUseCase });
-container.register(GetMapLocationsUseCase, { useClass: GetMapLocationsUseCase });
+container.register(GetMapLocationsUseCase, {
+  useClass: GetMapLocationsUseCase,
+});
 container.register(GetPlanSimulatorDataUseCase, {
   useClass: GetPlanSimulatorDataUseCase,
 });

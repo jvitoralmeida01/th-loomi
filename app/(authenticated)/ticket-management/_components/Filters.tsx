@@ -1,13 +1,17 @@
-'use client';
+"use client";
 
 import Image from "next/image";
 import Select from "@/app/(authenticated)/ticket-management/_components/Select";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import SearchIcon from "@/assets/icons/search.svg";
 import { useDebouncedCallback } from "use-debounce";
-import { mockAssigneeOptions } from "../_utils/mock";
 import clearParams from "../../../_utils/clearNewTicketParams";
-import { TicketPriority, TicketPriorityValues, TicketStatus, TicketStatusValues } from "@/src/domain/entities/tickets";
+import {
+  TicketPriority,
+  TicketPriorityValues,
+  TicketStatus,
+  TicketStatusValues,
+} from "@/src/domain/entities/tickets";
 
 export default function Filters({ assignees }: { assignees: string[] }) {
   const searchParams = useSearchParams();
@@ -27,7 +31,7 @@ export default function Filters({ assignees }: { assignees: string[] }) {
     ...TicketStatusValues.map((status: TicketStatus) => ({
       label: status,
       value: status,
-    }))
+    })),
   ];
 
   const priorityOptions = [
@@ -38,7 +42,7 @@ export default function Filters({ assignees }: { assignees: string[] }) {
     ...TicketPriorityValues.map((priority: TicketPriority) => ({
       label: priority,
       value: priority,
-    }))
+    })),
   ];
 
   const assigneeOptions = [
@@ -62,7 +66,11 @@ export default function Filters({ assignees }: { assignees: string[] }) {
     replace(`${pathname}?${params.toString()}`);
   }, 300);
 
-  const handleFilter = (status?: string, priority?: string, assignee?: string) => {
+  const handleFilter = (
+    status?: string,
+    priority?: string,
+    assignee?: string
+  ) => {
     const params = clearParams(new URLSearchParams(searchParams));
 
     if (status) params.set("status", status);
@@ -99,21 +107,27 @@ export default function Filters({ assignees }: { assignees: string[] }) {
           name="status"
           defaultValue={defaultStatus}
           options={statusOptions}
-          onChange={(e) => handleFilter(e.target.value, defaultPriority, defaultAssignee)}
+          onChange={(e) =>
+            handleFilter(e.target.value, defaultPriority, defaultAssignee)
+          }
         />
         <Select
           name="priority"
           defaultValue={defaultPriority}
           options={priorityOptions}
-          onChange={(e) => handleFilter(defaultStatus, e.target.value, defaultAssignee)}
+          onChange={(e) =>
+            handleFilter(defaultStatus, e.target.value, defaultAssignee)
+          }
         />
         <Select
           name="assignee"
           defaultValue={defaultAssignee}
           options={assigneeOptions}
-          onChange={(e) => handleFilter(defaultStatus, defaultPriority, e.target.value)}
+          onChange={(e) =>
+            handleFilter(defaultStatus, defaultPriority, e.target.value)
+          }
         />
       </div>
     </>
-    );
+  );
 }

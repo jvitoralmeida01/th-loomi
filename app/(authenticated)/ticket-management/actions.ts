@@ -4,7 +4,10 @@ import routes from "@/app/_utils/routes";
 import { redirect } from "next/navigation";
 import { container } from "@/di/container";
 import { TicketManagementService } from "@/src/application/services/TicketManagementService";
-import { GetAllTicketsInput, GetAllTicketsOutput } from "@/src/application/useCases/GetAllTicketsUseCase";
+import {
+  GetAllTicketsInput,
+  GetAllTicketsOutput,
+} from "@/src/application/useCases/GetAllTicketsUseCase";
 import { GetAllAssigneesOutput } from "@/src/application/useCases/GetAllAssigneesUseCase";
 import { GetInfoCardsDataOutput } from "@/src/application/useCases/GetInfoCardsDataUseCase";
 import { CreateTicketInput } from "@/src/application/useCases/CreateTicketUseCase";
@@ -13,20 +16,22 @@ import { UpdateTicketInput } from "@/src/application/useCases/UpdateTicketUseCas
 
 export type FeedbackType = "success" | "error";
 
-export async function getTickets(params: Readonly<GetAllTicketsInput>): Promise<GetAllTicketsOutput> {
+export async function getTickets(
+  params: Readonly<GetAllTicketsInput>
+): Promise<GetAllTicketsOutput> {
   const ticketManagementService = container.resolve(TicketManagementService);
   return await ticketManagementService.getAllTickets(params);
-};
+}
 
 export async function getAllAssignees(): Promise<GetAllAssigneesOutput> {
   const ticketManagementService = container.resolve(TicketManagementService);
   return await ticketManagementService.getAllAssignees();
-};
+}
 
 export async function getInfoCardsData(): Promise<GetInfoCardsDataOutput> {
   const ticketManagementService = container.resolve(TicketManagementService);
   return await ticketManagementService.getInfoCardsData();
-};
+}
 
 export async function createTicket(formData: FormData) {
   const newTicket: CreateTicketInput = {
@@ -38,7 +43,8 @@ export async function createTicket(formData: FormData) {
   };
 
   const ticketManagementService = container.resolve(TicketManagementService);
-  const createTicketOutput = await ticketManagementService.createTicket(newTicket);
+  const createTicketOutput =
+    await ticketManagementService.createTicket(newTicket);
 
   if (createTicketOutput.success) {
     redirect(`${routes.ticketManagement}?newTicketFeedback=success`);
@@ -51,7 +57,9 @@ export async function cancelTicketCreation() {
   redirect(routes.ticketManagement);
 }
 
-export async function getTicketById(ticketId: string): Promise<GetTicketByIdOutput> {
+export async function getTicketById(
+  ticketId: string
+): Promise<GetTicketByIdOutput> {
   const ticketManagementService = container.resolve(TicketManagementService);
   return await ticketManagementService.getTicketById({ ticketId });
 }
@@ -68,7 +76,8 @@ export async function updateTicket(formData: FormData) {
   };
 
   const ticketManagementService = container.resolve(TicketManagementService);
-  const updateTicketOutput = await ticketManagementService.updateTicket(updateData);
+  const updateTicketOutput =
+    await ticketManagementService.updateTicket(updateData);
 
   if (updateTicketOutput.success) {
     redirect(`${routes.ticketManagement}?editTicketFeedback=success`);
