@@ -1,15 +1,16 @@
-import Image from "next/image";
 import ClientsTableFilters from "./ClientsTableFilters";
 import ClientsTableRow from "./ClientsTableRow";
-import { Client } from "../actions";
-import sortArrowIcon from "@/assets/icons/sort_arrow.svg";
-import sortLetttersIcon from "@/assets/icons/sort_letters.svg";
+import SortTableHeader from "./SortTableHeader";
+import { Client } from "@/src/domain/entities/dashboard";
 
 interface ClientsTableProps {
   clients: Client[];
+  statusValues: string[];
+  typeValues: string[];
+  regionValues: string[];
 }
 
-export default function ClientsTable({ clients }: ClientsTableProps) {
+export default function ClientsTable({ clients, statusValues, typeValues, regionValues }: ClientsTableProps) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
@@ -17,30 +18,14 @@ export default function ClientsTable({ clients }: ClientsTableProps) {
           Clientes ativos
         </h2>
 
-        <ClientsTableFilters />
+        <ClientsTableFilters statusValues={statusValues} typeValues={typeValues} regionValues={regionValues} />
       </div>
 
       <div className="overflow-x-auto rounded-xl bg-neutral-100/5 px-4 py-1 mt-2 pb-4">
         <table className="w-full table-fixed text-left">
           <thead>
             <tr className="border-b border-glass-edge">
-              <th className="w-[18%] px-2 py-4 text-xs font-montserrat font-normal text-neutral-100/70">
-                <div className="flex items-center gap-1">
-                  Nome
-                  <div className="flex flex-row">
-                    <Image
-                      src={sortArrowIcon}
-                      alt="Sort Arrow Icon"
-                      className="w-3 h-3"
-                    />
-                    <Image
-                      src={sortLetttersIcon}
-                      alt="Sort Letters Icon"
-                      className="w-3 h-3 -ml-1"
-                    />
-                  </div>
-                </div>
-              </th>
+              <SortTableHeader label="Nome" width="w-[18%]" />
               <th className="w-[18%] px-2 py-4 text-xs font-montserrat font-normal text-neutral-100/70">
                 Tipo de Seguro
               </th>

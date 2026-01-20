@@ -61,7 +61,8 @@ export class GetInfoCardsDataUseCase {
 
     let averageTime = "...";
     if (!isNaN(averageTimeInMinutes)) {
-      averageTime = `${averageTimeInMinutes / 24}h`;
+      const hours = Math.floor(averageTimeInMinutes / 60);
+      averageTime = `${hours < 10 ? '<1' : hours}h`;
     }
 
     return { resolvedTodayTickets: resolvedTodayTickets.length, averageTime };

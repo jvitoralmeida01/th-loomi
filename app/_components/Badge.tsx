@@ -1,8 +1,9 @@
 import { TicketPriority, TicketStatus } from "@/src/domain/entities/tickets";
+import { ClientStatus } from "@/src/domain/entities/dashboard";
 
 interface BadgeProps {
   label: string;
-  variant: TicketPriority | TicketStatus | "Ativo" | "Pendente";
+  variant: TicketPriority | TicketStatus | ClientStatus;
   className?: string;
 }
 
