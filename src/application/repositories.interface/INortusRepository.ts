@@ -1,7 +1,12 @@
+import { LoginRequest } from "@/src/domain/requests/auth";
 import {
   CreateTicketRequest,
   UpdateTicketRequest,
 } from "@/src/domain/requests/tickets";
+import {
+  GetUserByEmailResponse,
+  LoginResponse,
+} from "@/src/domain/responses/auth";
 import { GetDashboardResponse } from "@/src/domain/responses/dashboard";
 import { GetMapLocationsResponse } from "@/src/domain/responses/GetMapLocationsResponse";
 import {
@@ -12,6 +17,10 @@ import {
 export const INortusRepository = Symbol("INortusRepository");
 
 export interface INortusRepository {
+  // Auth
+  login(credentials: LoginRequest): Promise<LoginResponse>;
+  getUserByEmail(email: string): Promise<GetUserByEmailResponse>;
+
   // Ticket Management
   getAllTickets(): Promise<GetAllTicketsResponse>;
   getTicketById(ticketId: string): Promise<GetTicketByIdResponse>;

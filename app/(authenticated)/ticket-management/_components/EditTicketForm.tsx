@@ -1,8 +1,8 @@
-import Button from "@/app/_components/Button";
 import { cancelTicketEdit, updateTicket } from "../actions";
 import Image from "next/image";
 import CloseOutlinedIcon from "@/assets/icons/close_outlined.svg";
 import EditTicketFormCancelButton from "./EditTicketFormCancelButton";
+import EditTicketSubmitButton from "./EditTicketSubmitButton";
 import ArrowDownIcon from "@/assets/icons/arrow_down.svg";
 import { Ticket, TicketPriorityValues, TicketStatusValues } from "@/src/domain/entities/tickets";
 
@@ -148,9 +148,7 @@ export default function EditTicketForm({ ticket }: Readonly<EditTicketFormProps>
         <div className="flex gap-4 justify-center mt-4">
           <EditTicketFormCancelButton />
 
-          <Button type="submit">
-            Salvar
-          </Button>
+          <EditTicketSubmitButton />
         </div>
       </form>
     </div>

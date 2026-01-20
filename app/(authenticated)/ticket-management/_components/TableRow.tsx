@@ -15,23 +15,29 @@ export default function TableRow({ ticket, isLastRow = false }: TableRowProps) {
   const editUrl = `${routes.ticketManagement}?editTicket=${ticket._uuid}`;
 
   return (
-    <tr className={`border-b border-glass-edge hover:bg-neutral-100/10 transition-colors ${isLastRow ? "border-b-0" : "border-b"}`}>
+    <tr
+      className={`border-b border-glass-edge hover:bg-neutral-100/10 transition-colors ${isLastRow ? "border-b-0" : "border-b"}`}
+    >
       <td
         className="px-2 py-6 font-montserrat font-semibold text-xs text-neutral-100 overflow-hidden text-ellipsis"
         title={ticket.id}
       >
         {ticket.id}
       </td>
-      <td
-        className="px-2 py-2"
-        title={ticket.priority}
-      >
+      <td className="px-2 py-2" title={ticket.priority}>
         <Badge variant={ticket.priority} label={ticket.priority} />
       </td>
-      <td className="px-2 py-2" title={`${ticket.clientName} - ${ticket.clientEmail}`}>
+      <td
+        className="px-2 py-2"
+        title={`${ticket.clientName} - ${ticket.clientEmail}`}
+      >
         <div className="flex flex-col">
-          <span className="font-montserrat font-semibold text-xs text-neutral-100 overflow-hidden text-ellipsis">{ticket.clientName}</span>
-          <span className="font-montserrat font-normal text-xs text-neutral-100 overflow-hidden text-ellipsis">{ticket.clientEmail}</span>
+          <span className="font-montserrat font-semibold text-xs text-neutral-100 overflow-hidden text-ellipsis">
+            {ticket.clientName}
+          </span>
+          <span className="font-montserrat font-normal text-xs text-neutral-100 overflow-hidden text-ellipsis">
+            {ticket.clientEmail}
+          </span>
         </div>
       </td>
       <td
@@ -49,10 +55,11 @@ export default function TableRow({ ticket, isLastRow = false }: TableRowProps) {
       >
         {ticket.createdAt}
       </td>
-      <td className="px-2 py-2 font-montserrat font-semibold text-xs text-neutral-100" title={ticket.assignee}>
-        <span className="line-clamp-3">
-          {ticket.assignee}
-        </span>
+      <td
+        className="px-2 py-2 font-montserrat font-semibold text-xs text-neutral-100 overflow-hidden text-ellipsis"
+        title={ticket.assignee}
+      >
+        <span className="line-clamp-3">{ticket.assignee}</span>
       </td>
       <td className="px-2 py-2">
         <div className="flex items-center gap-4">
@@ -79,4 +86,3 @@ export default function TableRow({ ticket, isLastRow = false }: TableRowProps) {
     </tr>
   );
 }
-

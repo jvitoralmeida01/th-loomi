@@ -1,8 +1,8 @@
-import Button from "@/app/_components/Button";
 import { cancelTicketCreation, createTicket } from "../actions";
 import Image from "next/image";
 import CloseOutlinedIcon from "@/assets/icons/close_outlined.svg";
 import NewTicketFormCancelButton from "./NewTicketFormCancelButton";
+import NewTicketSubmitButton from "./NewTicketSubmitButton";
 import ArrowDownIcon from "@/assets/icons/arrow_down.svg";
 import { TicketPriorityValues } from "@/src/domain/entities/tickets";
 
@@ -117,9 +117,7 @@ export default function NewTicketForm() {
         <div className="flex gap-4 justify-center mt-4">
           <NewTicketFormCancelButton />
 
-          <Button type="submit">
-            Salvar
-          </Button>
+          <NewTicketSubmitButton />
         </div>
       </form>
     </div>

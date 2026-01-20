@@ -180,7 +180,7 @@ export default function KpiEvolutionChart({ labels, arpu, conversionRate, churn,
           ))}
         </div>
       </div>
-      <div className="flex-1 min-h-[250px]">
+      <div className="flex-1 min-h-[150px]">
         <Chart options={chartOptions} series={series} type="area" height="100%" />
       </div>
     </div>

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
@@ -11,7 +11,10 @@ interface PaginationProps {
   totalPages: number;
 }
 
-export default function Pagination({ currentPage, totalPages }: PaginationProps) {
+export default function Pagination({
+  currentPage,
+  totalPages,
+}: PaginationProps) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -23,7 +26,7 @@ export default function Pagination({ currentPage, totalPages }: PaginationProps)
     } else {
       params.set("page", page.toString());
     }
-    replace(`${pathname}?${params.toString()}`);
+    replace(`${pathname}?${params.toString()}`, { scroll: false });
   }
 
   return (
@@ -35,7 +38,11 @@ export default function Pagination({ currentPage, totalPages }: PaginationProps)
         className="px-3 py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-100/10 cursor-pointer transition-colors"
         aria-label="First page"
       >
-        <Image src={SkipAllIcon} alt="Skip to first page" className="w-3 h-3 rotate-180 pointer-events-none" />
+        <Image
+          src={SkipAllIcon}
+          alt="Skip to first page"
+          className="w-3 h-3 rotate-180 pointer-events-none"
+        />
       </button>
       <button
         type="button"
@@ -44,7 +51,11 @@ export default function Pagination({ currentPage, totalPages }: PaginationProps)
         className="px-3 py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-100/10 cursor-pointer transition-colors"
         aria-label="Previous page"
       >
-        <Image src={SkipIcon} alt="Go to previous page" className="w-3 h-3 rotate-180 pointer-events-none" />
+        <Image
+          src={SkipIcon}
+          alt="Go to previous page"
+          className="w-3 h-3 rotate-180 pointer-events-none"
+        />
       </button>
       <span className="px-4 text-sm text-neutral-100">
         {currentPage} de {totalPages}
@@ -56,7 +67,11 @@ export default function Pagination({ currentPage, totalPages }: PaginationProps)
         className="px-3 py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-100/10 cursor-pointer transition-colors"
         aria-label="Next page"
       >
-        <Image src={SkipIcon} alt="Go to next page" className="w-3 h-3 pointer-events-none" />
+        <Image
+          src={SkipIcon}
+          alt="Go to next page"
+          className="w-3 h-3 pointer-events-none"
+        />
       </button>
       <button
         type="button"
@@ -65,9 +80,12 @@ export default function Pagination({ currentPage, totalPages }: PaginationProps)
         className="px-3 py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-100/10 cursor-pointer transition-colors"
         aria-label="Last page"
       >
-        <Image src={SkipAllIcon} alt="Skip to last page" className="w-3 h-3 pointer-events-none" />
+        <Image
+          src={SkipAllIcon}
+          alt="Skip to last page"
+          className="w-3 h-3 pointer-events-none"
+        />
       </button>
     </div>
   );
 }
-
