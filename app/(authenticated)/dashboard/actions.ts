@@ -1,7 +1,7 @@
 "use server";
 
 import { container } from "@/di/container";
-import { DashboardService } from "@/src/application/services/DashboardService";
+import { DashboardService } from "@/src/application/services/dashboardService";
 import { MapLocationsService } from "@/src/application/services/MapLocationsService";
 import {
   GetDashboardInput,

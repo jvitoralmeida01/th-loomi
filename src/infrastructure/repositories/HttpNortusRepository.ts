@@ -11,6 +11,11 @@ import {
 } from "@/src/domain/requests/tickets";
 import { GetDashboardResponse } from "@/src/domain/responses/dashboard";
 import { GetMapLocationsResponse } from "@/src/domain/responses/GetMapLocationsResponse";
+import { LoginRequest } from "@/src/domain/requests/auth";
+import {
+  GetUserByEmailResponse,
+  LoginResponse,
+} from "@/src/domain/responses/auth";
 
 export const TICKETS_CACHE_TAG = "tickets";
 export const DASHBOARD_CACHE_TAG = "dashboard";
@@ -33,6 +38,44 @@ export class HttpNortusRepository implements INortusRepository {
     if (!this.apiBaseUrl) {
       throw new Error("API_BASE_URL environment variable is not set");
     }
+  }
+
+  async login(credentials: LoginRequest): Promise<LoginResponse> {
+    const response = await fetch(`${this.apiBaseUrl}/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(credentials),
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to login: ${response.status} - ${response.statusText}`
+      );
+    }
+
+    return response.json();
+  }
+
+  async getUserByEmail(email: string): Promise<GetUserByEmailResponse> {
+    const response = await fetch(
+      `${this.apiBaseUrl}/users/by-email/${encodeURIComponent(email)}`,
+      {
+        method: "GET",
+        headers: this.headers,
+        cache: "no-store",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch user by email: ${response.status} - ${response.statusText}`
+      );
+    }
+
+    return response.json();
   }
 
   async getAllTickets(): Promise<GetAllTicketsResponse> {

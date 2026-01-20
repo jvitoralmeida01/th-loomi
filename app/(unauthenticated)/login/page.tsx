@@ -5,21 +5,19 @@ import logo from "@/assets/text_logo.svg";
 import arrowDownIcon from "@/assets/icons/arrow_down.svg";
 import brFlag from "@/assets/flags/br.png";
 import helpIcon from "@/assets/icons/customer_support.svg";
-import Checkbox from "../../_components/Checkbox";
 import Button, { ButtonVariant } from "../../_components/Button";
-import TextField from "../../_components/TextField";
 import ReverseBorderRadius from "../../_components/ReverseBorderRadius";
+import TextField from "./_components/TextField";
+import Checkbox from "../../_components/Checkbox";
+import { login } from "./actions";
 
-async function loginAction(formData: FormData) {
-  "use server";
-  const username = formData.get("username");
-  const password = formData.get("password");
-
-  // Mocked login response for now.
-  console.info("Mock login", { username, hasPassword: Boolean(password) });
+interface LoginPageProps {
+  searchParams: Promise<{ error?: string }>;
 }
 
-export default function LoginPage() {
+export default async function LoginPage({ searchParams }: LoginPageProps) {
+  const { error } = await searchParams;
+
   return (
     <div className="min-h-screen bg-background text-label">
       <main className="mx-auto flex w-full flex-col gap-10 py-16 px-16 lg:flex-row lg:items-stretch">
@@ -28,13 +26,15 @@ export default function LoginPage() {
 
           <div className="flex flex-col gap-14 w-full">
             <div className="flex flex-col gap-2">
-              <h1 className="text-3xl font-space-grotesk text-neutral-200">Login</h1>
+              <h1 className="text-3xl font-space-grotesk text-neutral-200">
+                Login
+              </h1>
               <p className="text-md text-neutral-200 tracking-wide">
                 Entre com suas credenciais para acessar a sua conta.
               </p>
             </div>
 
-            <form action={loginAction} className="flex flex-col gap-5 w-full">
+            <form action={login} className="flex flex-col gap-5 w-full">
               <div className="flex flex-col gap-6">
                 <TextField
                   name="username"
@@ -51,6 +51,12 @@ export default function LoginPage() {
                 />
               </div>
 
+              {error && (
+                <p className="text-sm text-red-500 px-4">
+                  {decodeURIComponent(error)}
+                </p>
+              )}
+
               <div className="flex items-center justify-between text-md text-label-disabled pr-4">
                 <Checkbox label="Lembrar meu usuário" name="remember" />
                 <a href="#" className="text-sm text-primary">
@@ -58,7 +64,11 @@ export default function LoginPage() {
                 </a>
               </div>
 
-              <Button type="submit" className="w-full mt-12" variant={ButtonVariant.PRIMARY}>
+              <Button
+                type="submit"
+                className="w-full mt-12"
+                variant={ButtonVariant.PRIMARY}
+              >
                 Entrar
               </Button>
             </form>
@@ -77,7 +87,11 @@ export default function LoginPage() {
                   className="flex items-center gap-2 py-6"
                   variant={ButtonVariant.NAV}
                 >
-                  <Image src={helpIcon} alt="Customer Support Icon" className="h-5 w-5" />
+                  <Image
+                    src={helpIcon}
+                    alt="Customer Support Icon"
+                    className="h-5 w-5"
+                  />
                   Ajuda
                 </Button>
                 <Button
@@ -85,8 +99,16 @@ export default function LoginPage() {
                   className="flex items-center gap-2"
                   variant={ButtonVariant.NAV}
                 >
-                  <Image src={arrowDownIcon} alt="Arrow Down Icon" className="h-4 w-4" />
-                  <Image src={brFlag} alt="Flag Icon" className="h-4 w-4 pointer-events-none" />
+                  <Image
+                    src={arrowDownIcon}
+                    alt="Arrow Down Icon"
+                    className="h-4 w-4"
+                  />
+                  <Image
+                    src={brFlag}
+                    alt="Flag Icon"
+                    className="h-4 w-4 pointer-events-none"
+                  />
                   PT-br
                 </Button>
                 <div />
