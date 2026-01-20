@@ -17,17 +17,17 @@ export default function ClientsTableFilters(props: ClientsTableFiltersProps) {
 
   const statusOptions = statusValues.map((status) => ({
     label: status,
-    value: status === "Todos" ? '' : status,
+    value: status === "Todos" ? "" : status,
   }));
 
   const typeOptions = typeValues.map((type) => ({
     label: type,
-    value: type === "Todos" ? '' : type,
+    value: type === "Todos" ? "" : type,
   }));
 
   const regionOptions = regionValues.map((region) => ({
     label: region,
-    value: region === "Todos" ? '' : region,
+    value: region === "Todos" ? "" : region,
   }));
 
   const searchParams = useSearchParams();
@@ -83,19 +83,25 @@ export default function ClientsTableFilters(props: ClientsTableFiltersProps) {
         name="status"
         defaultValue={defaultStatus}
         options={statusOptions}
-        onChange={(e) => handleFilter(e.target.value, defaultType, defaultRegion)}
+        onChange={(e) =>
+          handleFilter(e.target.value, defaultType, defaultRegion)
+        }
       />
       <Select
         name="type"
         defaultValue={defaultType}
         options={typeOptions}
-        onChange={(e) => handleFilter(defaultStatus, e.target.value, defaultRegion)}
+        onChange={(e) =>
+          handleFilter(defaultStatus, e.target.value, defaultRegion)
+        }
       />
       <Select
         name="region"
         defaultValue={defaultRegion}
         options={regionOptions}
-        onChange={(e) => handleFilter(defaultStatus, defaultType, e.target.value)}
+        onChange={(e) =>
+          handleFilter(defaultStatus, defaultType, e.target.value)
+        }
       />
     </div>
   );

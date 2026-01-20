@@ -5,26 +5,26 @@ import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
-  subsets: ["latin"],
-  weight: ["400", "500"],
+  subsets: ["latin"] as const,
+  weight: ["400", "500"] as const,
 });
 
 const inter = Inter({
   variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["400"],
+  subsets: ["latin"] as const,
+  weight: ["400"] as const,
 });
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"] as const,
+  weight: ["400", "500", "600", "700"] as const,
 });
 
 const workSans = Work_Sans({
   variable: "--font-work-sans",
-  subsets: ["latin"],
-  weight: ["400"],
+  subsets: ["latin"] as const,
+  weight: ["400"] as const,
 });
 
 export const metadata: Metadata = {

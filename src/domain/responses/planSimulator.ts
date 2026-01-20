@@ -9,4 +9,3 @@ export interface PlanSimulatorDataResponse {
   includedBenefits: string[];
   plansIndicators: PlanIndicatorResponse[];
 }
-

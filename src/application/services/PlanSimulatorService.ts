@@ -15,4 +15,3 @@ export class PlanSimulatorService {
     return await this.getPlanSimulatorDataUseCase.execute();
   }
 }
-

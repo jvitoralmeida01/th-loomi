@@ -8,9 +8,9 @@ export default {
 };
 
 export const routeTitles = {
-  '/chat' : "Chat & Assistente Virtual",
-  '/dashboard': "Dashboard",
-  '/plan-simulator': "Simulador de Planos",
-  '/profile': "Seu Perfil",
-  '/ticket-management': "Gestão de Tickets",
+  "/chat": "Chat & Assistente Virtual",
+  "/dashboard": "Dashboard",
+  "/plan-simulator": "Simulador de Planos",
+  "/profile": "Seu Perfil",
+  "/ticket-management": "Gestão de Tickets",
 };

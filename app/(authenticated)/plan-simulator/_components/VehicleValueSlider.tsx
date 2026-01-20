@@ -1,6 +1,9 @@
 "use client";
 
-import { usePlanSimulatorDispatch, usePlanSimulatorSelector } from "@/app/(authenticated)/plan-simulator/_store/hooks";
+import {
+  usePlanSimulatorDispatch,
+  usePlanSimulatorSelector,
+} from "@/app/(authenticated)/plan-simulator/_store/hooks";
 import { setVehicleValue } from "@/app/(authenticated)/plan-simulator/_store/planSimulatorSlice";
 import { vehicleValueRange } from "../_utils/config";
 import { formatCurrency } from "../_utils/formatters";

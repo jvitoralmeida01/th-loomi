@@ -23,8 +23,8 @@ export class GetAllAssigneesUseCase {
   }
 
   _extractAssignees(tickets: TicketResponse[]): string[] {
-    return [
-      ...new Set(tickets.map((ticket) => ticket.responsible))
-    ].sort((a, b) => a.localeCompare(b));
+    return [...new Set(tickets.map((ticket) => ticket.responsible))].sort(
+      (a, b) => a.localeCompare(b)
+    );
   }
 }

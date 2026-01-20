@@ -1,6 +1,10 @@
 import { injectable, inject } from "tsyringe";
 import { INortusRepository } from "@/src/application/repositories.interface/INortusRepository";
-import { Ticket, TicketPriority, TicketStatus } from "@/src/domain/entities/tickets";
+import {
+  Ticket,
+  TicketPriority,
+  TicketStatus,
+} from "@/src/domain/entities/tickets";
 import { GetTicketByIdResponse } from "@/src/domain/responses/tickets";
 
 export interface GetTicketByIdInput {
@@ -32,7 +36,8 @@ export class GetTicketByIdUseCase {
     }
 
     try {
-      const ticketResponse = await this.nortusRepository.getTicketById(ticketId);
+      const ticketResponse =
+        await this.nortusRepository.getTicketById(ticketId);
       const ticket = this._mapToDomain(ticketResponse);
 
       return {
@@ -66,4 +71,3 @@ export class GetTicketByIdUseCase {
     };
   }
 }
-

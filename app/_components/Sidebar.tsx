@@ -16,16 +16,28 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { path: routes.dashboard, icon: dashboardIcon, label: "Dashboard" },
-  { path: routes.ticketManagement, icon: ticketIcon, label: "Ticket Management" },
+  {
+    path: routes.ticketManagement,
+    icon: ticketIcon,
+    label: "Ticket Management",
+  },
   { path: routes.chat, icon: chatIcon, label: "Chat" },
   { path: routes.profile, icon: userIcon, label: "Profile" },
-  { path: routes.planSimulator, icon: planSimulatorIcon, label: "Plan Simulator" },
+  {
+    path: routes.planSimulator,
+    icon: planSimulatorIcon,
+    label: "Plan Simulator",
+  },
 ];
 
 export default function Sidebar() {
   return (
     <aside className="fixed left-0 top-0 h-screen bg-surface shadow-xl-right z-50 flex flex-col items-center pt-7 pb-12 pl-4 pr-9 rounded-tr-3xl rounded-br-3xl">
-      <Image src={logo} alt="Nortus Logo" className="w-8 h-8 pointer-events-none" />
+      <Image
+        src={logo}
+        alt="Nortus Logo"
+        className="w-8 h-8 pointer-events-none"
+      />
 
       <nav className="flex flex-col justify-center gap-8 flex-1">
         {navItems.map((item) => (
