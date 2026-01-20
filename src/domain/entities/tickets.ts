@@ -5,6 +5,7 @@ export type TicketStatus = "Aberto" | "Em andamento" | "Fechado"
 export const TicketStatusValues: TicketStatus[] = ["Aberto", "Em andamento", "Fechado"]
 
 export interface Ticket {
+  _uuid: string;
   id: string;
   priority: TicketPriority;
   clientName: string;

@@ -29,7 +29,7 @@ export class GetInfoCardsDataUseCase {
       openedTickets: openedTickets.toString(),
       inProgressTickets: inProgressTickets.toString(),
       resolvedTodayTickets: resolvedTodayTickets.toString(),
-      averageTime: `${averageTime.toString()} minutos`,
+      averageTime: averageTime,
     };
   }
 
@@ -57,11 +57,11 @@ export class GetInfoCardsDataUseCase {
 
       return acc + timeDiff;
     }, 0);
-    let averageTimeAsNumber = totalTime / resolvedTodayTickets.length;
+    let averageTimeInMinutes = totalTime / resolvedTodayTickets.length;
 
-    let averageTime = averageTimeAsNumber.toString();
-    if (isNaN(averageTimeAsNumber)) {
-      averageTime = "...";
+    let averageTime = "...";
+    if (!isNaN(averageTimeInMinutes)) {
+      averageTime = `${averageTimeInMinutes / 24}h`;
     }
 
     return { resolvedTodayTickets: resolvedTodayTickets.length, averageTime };

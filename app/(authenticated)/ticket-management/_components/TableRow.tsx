@@ -3,6 +3,8 @@ import Image from "next/image";
 import editIcon from "@/assets/icons/edit.svg";
 import goToIcon from "@/assets/icons/go_to.svg";
 import { Ticket } from "@/src/domain/entities/tickets";
+import Link from "next/link";
+import routes from "@/app/_utils/routes";
 
 interface TableRowProps {
   ticket: Ticket;
@@ -10,6 +12,8 @@ interface TableRowProps {
 }
 
 export default function TableRow({ ticket, isLastRow = false }: TableRowProps) {
+  const editUrl = `${routes.ticketManagement}?editTicket=${ticket._uuid}`;
+
   return (
     <tr className={`border-b border-glass-edge hover:bg-neutral-100/10 transition-colors ${isLastRow ? "border-b-0" : "border-b"}`}>
       <td
@@ -52,15 +56,15 @@ export default function TableRow({ ticket, isLastRow = false }: TableRowProps) {
       </td>
       <td className="px-2 py-2">
         <div className="flex items-center gap-4">
-          <button
-            type="button"
+          <Link
+            href={editUrl}
             className="flex items-center gap-2 text-xs text-neutral-300 hover:text-neutral-100 transition-colors"
             aria-label="Editar"
             title="Editar"
           >
             <span>Editar</span>
             <Image src={editIcon} alt="Editar" className="w-4 h-4" />
-          </button>
+          </Link>
           <button
             type="button"
             className="flex items-center gap-2 text-xs text-neutral-300 hover:text-neutral-100 transition-colors"

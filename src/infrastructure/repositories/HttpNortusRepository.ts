@@ -1,9 +1,8 @@
 import { injectable } from "tsyringe";
 import { INortusRepository } from "@/src/application/repositories.interface/INortusRepository";
-import { GetAllTicketsResponse } from "@/src/domain/responses/tickets";
-import { Ticket } from "@/src/domain/entities/tickets";
+import { GetAllTicketsResponse, GetTicketByIdResponse } from "@/src/domain/responses/tickets";
 import { revalidateTicketsCache } from "../utils/revalidateTickets";
-import { CreateTicketRequest } from "@/src/domain/requests/tickets";
+import { CreateTicketRequest, UpdateTicketRequest } from "@/src/domain/requests/tickets";
 
 export const TICKETS_CACHE_TAG = "tickets";
 
@@ -45,6 +44,22 @@ export class HttpNortusRepository implements INortusRepository {
     return response.json();
   }
 
+  async getTicketById(ticketId: string): Promise<GetTicketByIdResponse> {
+    const response = await fetch(`${this.apiBaseUrl}/tickets/${ticketId}`, {
+      method: "GET",
+      headers: this.headers,
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch ticket: ${response.status} - ${response.statusText}`
+      );
+    }
+
+    return response.json();
+  }
+
   async createTicket(ticket: CreateTicketRequest): Promise<void> {
     const response = await fetch(`${this.apiBaseUrl}/tickets`, {
       method: "POST",
@@ -56,6 +71,24 @@ export class HttpNortusRepository implements INortusRepository {
       throw new Error(
         `Failed to create ticket: ${response.status} - ${response.statusText}`
       );
+    }
+
+    revalidateTicketsCache({ eagerly: true });
+  }
+
+  async updateTicket(ticketId: string, ticket: UpdateTicketRequest): Promise<void> {
+    const response = await fetch(`${this.apiBaseUrl}/tickets/${ticketId}`, {
+      method: "PATCH",
+      headers: this.headers,
+      body: JSON.stringify(ticket),
+    });
+
+    if (!response.ok) {
+      const e = new Error(
+        `Failed to update ticket: ${response.status} - ${response.statusText}`
+      );
+      console.error('Error: ', ticketId, ticket, e);
+      throw e;
     }
 
     revalidateTicketsCache({ eagerly: true });
