@@ -47,7 +47,7 @@ export default function ChatContainer() {
       <Card className="flex flex-col max-h-[calc(85vh-8rem)]">
         <ChatMessages onActionClick={handleActionClick} />
       </Card>
-      <div className="flex-1">
+      <div className="lg:px-24 px-8">
         <ChatInput />
       </div>
     </div>
