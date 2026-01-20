@@ -46,6 +46,7 @@ export class GetAllTicketsUseCase {
 
   _mapToDomain(response: GetAllTicketsResponse): Ticket[] {
     return response.data.map((ticketResponse) => ({
+      _uuid: ticketResponse.id,
       id: ticketResponse.ticketId,
       priority: ticketResponse.priority as TicketPriority,
       clientName: ticketResponse.client,

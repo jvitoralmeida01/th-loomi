@@ -1,6 +1,8 @@
 import { injectable } from "tsyringe";
 import { INortusRepository } from "@/src/application/repositories.interface/INortusRepository";
-import { GetAllTicketsResponse } from "@/src/domain/responses/tickets";
+import { GetAllTicketsResponse, GetTicketByIdResponse } from "@/src/domain/responses/tickets";
+import { revalidateTicketsCache } from "../utils/revalidateTickets";
+import { CreateTicketRequest, UpdateTicketRequest } from "@/src/domain/requests/tickets";
 
 export const TICKETS_CACHE_TAG = "tickets";
 
@@ -12,7 +14,7 @@ export class HttpNortusRepository implements INortusRepository {
 
   constructor() {
     this.apiBaseUrl = process.env.API_BASE_URL || "";
-    this.authToken = `Bearer ...`;
+    this.authToken = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0OGFlMDBjLWFiOTgtNGJiMS05MjdmLWYyMzVlN2FjZDZiZiIsImNoYWxsZW5nZUxldmVsIjoyLCJyZWZyZXNoX3Rva2VuIjp7ImlkIjoiM2QzODA5NTEtZTk5Yi00NzcwLTlkYjctZGM4MzIzMmQ4NjE1IiwiZWF0IjoiMjAyNi0wMi0xOVQwMDoxNjoyNi44NzhaIn0sImlhdCI6MTc2ODg2ODE4NiwiZXhwIjoxODU1MjY4MTg2fQ.dEAldDmFKUtxzqprwgb7vGno3salrVjO5Q7u0YVvjpY`;
     this.headers = {
       "Content-Type": "application/json",
       Authorization: this.authToken,
@@ -40,6 +42,56 @@ export class HttpNortusRepository implements INortusRepository {
     }
 
     return response.json();
+  }
+
+  async getTicketById(ticketId: string): Promise<GetTicketByIdResponse> {
+    const response = await fetch(`${this.apiBaseUrl}/tickets/${ticketId}`, {
+      method: "GET",
+      headers: this.headers,
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch ticket: ${response.status} - ${response.statusText}`
+      );
+    }
+
+    return response.json();
+  }
+
+  async createTicket(ticket: CreateTicketRequest): Promise<void> {
+    const response = await fetch(`${this.apiBaseUrl}/tickets`, {
+      method: "POST",
+      headers: this.headers,
+      body: JSON.stringify(ticket),
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to create ticket: ${response.status} - ${response.statusText}`
+      );
+    }
+
+    revalidateTicketsCache({ eagerly: true });
+  }
+
+  async updateTicket(ticketId: string, ticket: UpdateTicketRequest): Promise<void> {
+    const response = await fetch(`${this.apiBaseUrl}/tickets/${ticketId}`, {
+      method: "PATCH",
+      headers: this.headers,
+      body: JSON.stringify(ticket),
+    });
+
+    if (!response.ok) {
+      const e = new Error(
+        `Failed to update ticket: ${response.status} - ${response.statusText}`
+      );
+      console.error('Error: ', ticketId, ticket, e);
+      throw e;
+    }
+
+    revalidateTicketsCache({ eagerly: true });
   }
 }
 

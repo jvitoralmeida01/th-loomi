@@ -32,37 +32,37 @@ function ToastContent({ title, subtitle, isSuccess, onClose }: { title: string; 
   );
 }
 
-export default function NewTicketFeedback() {
+export default function EditTicketFeedback() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const newTicketFeedback = searchParams.get("newTicketFeedback");
+  const editTicketFeedback = searchParams.get("editTicketFeedback");
   const shownRef = useRef<string | null>(null);
 
   useEffect(() => {
-    if (!newTicketFeedback) {
+    if (!editTicketFeedback) {
       shownRef.current = null;
       return;
     }
 
-    if (shownRef.current === newTicketFeedback) return;
+    if (shownRef.current === editTicketFeedback) return;
 
-    shownRef.current = newTicketFeedback;
+    shownRef.current = editTicketFeedback;
 
-    if (newTicketFeedback === "success") {
+    if (editTicketFeedback === "success") {
       const toastId = toast.custom((_) => (
         <ToastContent
-          title="Ticket criado com sucesso!"
-          subtitle="O ticket foi criado e já está na sua lista."
+          title="Ticket atualizado com sucesso!"
+          subtitle="O ticket foi atualizado e as alterações já estão visíveis."
           isSuccess
           onClose={() => toast.dismiss(toastId)}
         />
       ), { duration: 2000 });
-    } else if (newTicketFeedback === "error") {
+    } else if (editTicketFeedback === "error") {
       const toastId = toast.custom((_) => (
         <ToastContent
-          title="Erro ao criar ticket"
-          subtitle="Ocorreu um erro ao criar o ticket. Por favor, tente novamente."
+          title="Erro ao atualizar ticket"
+          subtitle="Ocorreu um erro ao atualizar o ticket. Por favor, tente novamente."
           isSuccess={false}
           onClose={() => toast.dismiss(toastId)}
         />
@@ -71,18 +71,11 @@ export default function NewTicketFeedback() {
 
     // Clear the query parameter from the URL
     const params = new URLSearchParams(searchParams.toString());
-    params.delete("newTicketFeedback");
+    params.delete("editTicketFeedback");
     const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname;
     router.replace(newUrl);
-  }, [newTicketFeedback, searchParams, router, pathname]);
+  }, [editTicketFeedback, searchParams, router, pathname]);
 
-  return (
-    <Toaster
-      position="bottom-center"
-      toastOptions={{
-        className: "shadow-lg [&>div]:rounded-lg",
-      }}
-    />
-  );
+  return null;
 }
 
