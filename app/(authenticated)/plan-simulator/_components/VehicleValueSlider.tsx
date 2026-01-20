@@ -2,7 +2,8 @@
 
 import { usePlanSimulatorDispatch, usePlanSimulatorSelector } from "@/app/(authenticated)/plan-simulator/_store/hooks";
 import { setVehicleValue } from "@/app/(authenticated)/plan-simulator/_store/planSimulatorSlice";
-import { vehicleValueRange, formatCurrency } from "../_utils/mock";
+import { vehicleValueRange } from "../_utils/config";
+import { formatCurrency } from "../_utils/formatters";
 import { PlanSimulatorRootState } from "@/app/(authenticated)/plan-simulator/_store/planSimulatorStore";
 
 export default function VehicleValueSlider() {
@@ -48,4 +49,3 @@ export default function VehicleValueSlider() {
     </div>
   );
 }
-

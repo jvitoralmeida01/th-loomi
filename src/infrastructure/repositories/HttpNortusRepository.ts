@@ -11,6 +11,7 @@ import {
 } from "@/src/domain/requests/tickets";
 import { GetDashboardResponse } from "@/src/domain/responses/dashboard";
 import { GetMapLocationsResponse } from "@/src/domain/responses/GetMapLocationsResponse";
+import { PlanSimulatorDataResponse } from "@/src/domain/responses/planSimulator";
 import { LoginRequest } from "@/src/domain/requests/auth";
 import {
   GetUserByEmailResponse,
@@ -20,6 +21,7 @@ import {
 export const TICKETS_CACHE_TAG = "tickets";
 export const DASHBOARD_CACHE_TAG = "dashboard";
 export const MAP_LOCATIONS_CACHE_TAG = "map-locations";
+export const PLAN_SIMULATOR_CACHE_TAG = "plan-simulator";
 
 @injectable()
 export class HttpNortusRepository implements INortusRepository {
@@ -182,6 +184,28 @@ export class HttpNortusRepository implements INortusRepository {
     if (!response.ok) {
       throw new Error(
         `Failed to fetch map locations: ${response.status} - ${response.statusText}`
+      );
+    }
+
+    return response.json();
+  }
+
+  async getPlanSimulatorData(): Promise<PlanSimulatorDataResponse> {
+    const response = await fetch(
+      `${this.apiBaseUrl}/nortus-v1/simulador-planos`,
+      {
+        method: "GET",
+        headers: this.headers,
+        next: {
+          revalidate: 120,
+          tags: [PLAN_SIMULATOR_CACHE_TAG],
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch plan simulator data: ${response.status} - ${response.statusText}`
       );
     }
 

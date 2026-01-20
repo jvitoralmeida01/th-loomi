@@ -1,18 +1,37 @@
 "use client";
 
-import { usePlanSimulatorDispatch, usePlanSimulatorSelector } from "@/app/(authenticated)/plan-simulator/_store/hooks";
-import { setSelectedPlan, PlanType, PlanSimulatorState } from "@/app/(authenticated)/plan-simulator/_store/planSimulatorSlice";
-import { plans, calculatePlanPrice, formatCurrency } from "../_utils/mock";
+import {
+  usePlanSimulatorDispatch,
+  usePlanSimulatorSelector,
+} from "@/app/(authenticated)/plan-simulator/_store/hooks";
+import {
+  setSelectedPlan,
+  PlanType,
+  PlanSimulatorState,
+} from "@/app/(authenticated)/plan-simulator/_store/planSimulatorSlice";
+import { calculatePlanPrice } from "../_utils/calculations";
+import { formatCurrency } from "../_utils/formatters";
 import { PlanSimulatorRootState } from "@/app/(authenticated)/plan-simulator/_store/planSimulatorStore";
 
 export default function PlanCards() {
   const dispatch = usePlanSimulatorDispatch();
-  const { selectedPlan, vehicleValue, clientAge, additionalCoverages }: PlanSimulatorState =
-    usePlanSimulatorSelector((state: PlanSimulatorRootState) => state.planSimulator);
+  const {
+    plans,
+    selectedPlan,
+    vehicleValue,
+    clientAge,
+    additionalCoverages,
+  }: PlanSimulatorState = usePlanSimulatorSelector(
+    (state: PlanSimulatorRootState) => state.planSimulator
+  );
 
   const handleSelectPlan = (planId: PlanType) => {
     dispatch(setSelectedPlan(planId));
   };
+
+  if (plans.length === 0) {
+    return null;
+  }
 
   return (
     <div className="flex gap-4 overflow-x-auto">
@@ -58,4 +77,3 @@ export default function PlanCards() {
     </div>
   );
 }
-

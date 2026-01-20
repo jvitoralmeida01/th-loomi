@@ -9,6 +9,7 @@ import {
 } from "@/src/domain/responses/auth";
 import { GetDashboardResponse } from "@/src/domain/responses/dashboard";
 import { GetMapLocationsResponse } from "@/src/domain/responses/GetMapLocationsResponse";
+import { PlanSimulatorDataResponse } from "@/src/domain/responses/planSimulator";
 import {
   GetAllTicketsResponse,
   GetTicketByIdResponse,
@@ -30,4 +31,7 @@ export interface INortusRepository {
   // Dashboard
   getDashboardData(): Promise<GetDashboardResponse>;
   getMapLocations(): Promise<GetMapLocationsResponse>;
+
+  // Plan Simulator
+  getPlanSimulatorData(): Promise<PlanSimulatorDataResponse>;
 }
