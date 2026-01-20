@@ -37,8 +37,8 @@ export default async function DashboardPage({
   ]);
 
   return (
-    <div className="flex flex-col gap-6 py-8 px-32 max-w-full">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div className="flex flex-col gap-8 py-8 px-32 max-w-full">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <Card className="lg:col-span-2 p-4">
           <KpiEvolutionChart
             labels={data.charts.kpiEvolution.labels}
@@ -49,7 +49,7 @@ export default async function DashboardPage({
           />
         </Card>
 
-        <Card className="p-4">
+        <Card className="py-6 px-4">
           <ConversionRateChart
             labels={data.charts.kpiEvolution.labels}
             data={data.charts.kpiEvolution.conversionRate}
@@ -57,7 +57,7 @@ export default async function DashboardPage({
         </Card>
       </div>
 
-      <Card className="p-4">
+      <Card className="px-4 py-6">
         <CustomerMap locations={mapLocations.locations} />
       </Card>
 

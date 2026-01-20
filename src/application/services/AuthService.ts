@@ -12,6 +12,7 @@ export const USER_INFO_COOKIE = "user_info";
 export interface AuthLoginInput {
   email: string;
   password: string;
+  rememberMe: boolean;
 }
 
 export interface AuthLoginOutput {
@@ -37,13 +38,19 @@ export class AuthService {
       } as LoginInput);
 
       const cookieStore = await cookies();
-      cookieStore.set(AUTH_TOKEN_COOKIE, loginResult.accessToken, {
+
+      const cookieOptions = {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
         path: "/",
-        maxAge: 60 * 60 * 24 * 7, // 7 days
-      });
+        ...(input.rememberMe ? { maxAge: 60 * 60 * 24 * 7 } : {}),
+      };
+
+      cookieStore.set(
+        AUTH_TOKEN_COOKIE,
+        loginResult.accessToken,
+        cookieOptions
+      );
 
       const userInfo = await this.getUserInfoUseCase.execute({
         email: input.email,
@@ -51,10 +58,8 @@ export class AuthService {
 
       cookieStore.set(USER_INFO_COOKIE, JSON.stringify(userInfo), {
         httpOnly: false,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
         path: "/",
-        maxAge: 60 * 60 * 24 * 7, // 7 days
+        ...(input.rememberMe ? { maxAge: 60 * 60 * 24 * 7 } : {}),
       });
 
       return {

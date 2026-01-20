@@ -98,7 +98,7 @@ export default function ConversionRateChart({ labels, data }: ConversionRateChar
               font-weight: 600;
               font-family: var(--font-montserrat), sans-serif;
             ">
-              ${value}
+              ${value} novos clientes
             </div>
           `;
         },
@@ -127,7 +127,7 @@ export default function ConversionRateChart({ labels, data }: ConversionRateChar
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-2">
         <h2 className="text-md font-montserrat font-bold text-neutral-100">
           Taxa de conversão
         </h2>
@@ -137,7 +137,7 @@ export default function ConversionRateChart({ labels, data }: ConversionRateChar
           className="w-4 h-4 opacity-70"
         />
       </div>
-      <div className="flex-1 min-h-[250px]">
+      <div className="flex-1 min-h-[200px]">
         <Chart options={chartOptions} series={series} type="bar" height="100%" />
       </div>
     </div>

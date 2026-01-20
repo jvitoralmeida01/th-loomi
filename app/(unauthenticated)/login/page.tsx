@@ -9,6 +9,7 @@ import Button, { ButtonVariant } from "../../_components/Button";
 import ReverseBorderRadius from "../../_components/ReverseBorderRadius";
 import TextField from "./_components/TextField";
 import Checkbox from "../../_components/Checkbox";
+import SubmitButton from "./_components/SubmitButton";
 import { login } from "./actions";
 
 interface LoginPageProps {
@@ -64,13 +65,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
                 </a>
               </div>
 
-              <Button
-                type="submit"
-                className="w-full mt-12"
-                variant={ButtonVariant.PRIMARY}
-              >
-                Entrar
-              </Button>
+              <SubmitButton />
             </form>
           </div>
 
