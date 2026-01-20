@@ -1,6 +1,9 @@
 import { injectable, inject } from "tsyringe";
 import { INortusRepository } from "@/src/application/repositories.interface/INortusRepository";
-import { TicketPriority, TicketPriorityValues } from "@/src/domain/entities/tickets";
+import {
+  TicketPriority,
+  TicketPriorityValues,
+} from "@/src/domain/entities/tickets";
 import { CreateTicketRequest } from "@/src/domain/requests/tickets";
 
 export interface CreateTicketInput {

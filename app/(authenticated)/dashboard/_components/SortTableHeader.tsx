@@ -10,7 +10,10 @@ interface SortableTableHeaderProps {
   width?: string;
 }
 
-export default function SortableTableHeader({ label, width = "w-[18%]" }: SortableTableHeaderProps) {
+export default function SortableTableHeader({
+  label,
+  width = "w-[18%]",
+}: SortableTableHeaderProps) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -55,4 +58,3 @@ export default function SortableTableHeader({ label, width = "w-[18%]" }: Sortab
     </th>
   );
 }
-

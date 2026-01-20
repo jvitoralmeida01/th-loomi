@@ -1,13 +1,18 @@
 "use client";
 
-import { usePlanSimulatorDispatch, usePlanSimulatorSelector } from "@/app/(authenticated)/plan-simulator/_store/hooks";
+import {
+  usePlanSimulatorDispatch,
+  usePlanSimulatorSelector,
+} from "@/app/(authenticated)/plan-simulator/_store/hooks";
 import { setClientAge } from "@/app/(authenticated)/plan-simulator/_store/planSimulatorSlice";
 import { clientAgeRange } from "../_utils/config";
 import { PlanSimulatorRootState } from "@/app/(authenticated)/plan-simulator/_store/planSimulatorStore";
 
 export default function ClientAgeSlider() {
   const dispatch = usePlanSimulatorDispatch();
-  const clientAge = usePlanSimulatorSelector((state: PlanSimulatorRootState) => state.planSimulator.clientAge);
+  const clientAge = usePlanSimulatorSelector(
+    (state: PlanSimulatorRootState) => state.planSimulator.clientAge
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setClientAge(Number(e.target.value)));

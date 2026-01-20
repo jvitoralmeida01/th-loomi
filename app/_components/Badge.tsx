@@ -9,14 +9,14 @@ interface BadgeProps {
 
 export default function Badge({ label, variant, className = "" }: BadgeProps) {
   const variantStyles = {
-    'Urgente': "bg-priority-high text-neutral-100",
-    'Média': "bg-priority-neutral text-background",
-    'Baixa': "bg-priority-low text-background",
-    'Aberto': "bg-info-neutral text-background",
-    'Em andamento': "bg-info-warn text-background",
-    'Fechado': "bg-neutral-500 text-neutral-100",
-    'Ativo': "bg-info-neutral text-background",
-    'Pendente': "bg-info-warn text-background",
+    Urgente: "bg-priority-high text-neutral-100",
+    Média: "bg-priority-neutral text-background",
+    Baixa: "bg-priority-low text-background",
+    Aberto: "bg-info-neutral text-background",
+    "Em andamento": "bg-info-warn text-background",
+    Fechado: "bg-neutral-500 text-neutral-100",
+    Ativo: "bg-info-neutral text-background",
+    Pendente: "bg-info-warn text-background",
   };
 
   return (
@@ -27,4 +27,3 @@ export default function Badge({ label, variant, className = "" }: BadgeProps) {
     </div>
   );
 }
-

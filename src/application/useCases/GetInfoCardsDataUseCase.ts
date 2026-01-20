@@ -22,8 +22,11 @@ export class GetInfoCardsDataUseCase {
   async execute(_: GetInfoCardsDataInput): Promise<GetInfoCardsDataOutput> {
     const allTicketsResponse = await this.nortusRepository.getAllTickets();
     const openedTickets = this._extractOpenedTickets(allTicketsResponse.data);
-    const inProgressTickets = this._extractInProgressTickets(allTicketsResponse.data);
-    const { resolvedTodayTickets, averageTime } = this._extractResolvedTodayTickets(allTicketsResponse.data);
+    const inProgressTickets = this._extractInProgressTickets(
+      allTicketsResponse.data
+    );
+    const { resolvedTodayTickets, averageTime } =
+      this._extractResolvedTodayTickets(allTicketsResponse.data);
 
     return {
       openedTickets: openedTickets.toString(),
@@ -34,18 +37,24 @@ export class GetInfoCardsDataUseCase {
   }
 
   _extractOpenedTickets(tickets: TicketResponse[]): number {
-    return tickets.filter((ticket) => ticket.status === TicketStatusValues[0]).length;
+    return tickets.filter((ticket) => ticket.status === TicketStatusValues[0])
+      .length;
   }
 
   _extractInProgressTickets(tickets: TicketResponse[]): number {
-    return tickets.filter((ticket) => ticket.status === TicketStatusValues[1]).length;
+    return tickets.filter((ticket) => ticket.status === TicketStatusValues[1])
+      .length;
   }
 
-  _extractResolvedTodayTickets(tickets: TicketResponse[]): { resolvedTodayTickets: number, averageTime: string } {
+  _extractResolvedTodayTickets(tickets: TicketResponse[]): {
+    resolvedTodayTickets: number;
+    averageTime: string;
+  } {
     const resolvedTodayTickets = tickets.filter((ticket) => {
       const updatedAt = new Date(ticket.updatedAt);
       const isResolved = ticket.status === TicketStatusValues[2];
-      const wasResolvedToday = updatedAt.toDateString() === new Date().toDateString();
+      const wasResolvedToday =
+        updatedAt.toDateString() === new Date().toDateString();
 
       return isResolved && wasResolvedToday;
     });
@@ -57,12 +66,12 @@ export class GetInfoCardsDataUseCase {
 
       return acc + timeDiff;
     }, 0);
-    let averageTimeInMinutes = totalTime / resolvedTodayTickets.length;
+    const averageTimeInMinutes = totalTime / resolvedTodayTickets.length;
 
     let averageTime = "...";
     if (!isNaN(averageTimeInMinutes)) {
       const hours = Math.floor(averageTimeInMinutes / 60);
-      averageTime = `${hours < 10 ? '<1' : hours}h`;
+      averageTime = `${hours < 10 ? "<1" : hours}h`;
     }
 
     return { resolvedTodayTickets: resolvedTodayTickets.length, averageTime };

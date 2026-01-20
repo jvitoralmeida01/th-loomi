@@ -19,12 +19,14 @@ export default function TopbarAction() {
     replace(`${pathname}?${params.toString()}`);
   }
 
-  return <button
-    type="button"
-    onClick={handleNewTicketClick}
-    className="flex flex-row items-center rounded-full bg-primary px-4 py-2 text-foreground text-xs cursor-pointer gap-2 font-montserrat font-semibold glow-primary hover:shadow-none transition-all duration-300"
-  >
-    <Image src={addIcon} alt="Add Ticket Icon" className="h-3 w-3" />
-    Novo Ticket
-  </button>;
+  return (
+    <button
+      type="button"
+      onClick={handleNewTicketClick}
+      className="flex flex-row items-center rounded-full bg-primary px-4 py-2 text-foreground text-xs cursor-pointer gap-2 font-montserrat font-semibold glow-primary hover:shadow-none transition-all duration-300"
+    >
+      <Image src={addIcon} alt="Add Ticket Icon" className="h-3 w-3" />
+      Novo Ticket
+    </button>
+  );
 }

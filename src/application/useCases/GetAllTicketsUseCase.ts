@@ -1,6 +1,10 @@
 import { injectable, inject } from "tsyringe";
 import { INortusRepository } from "@/src/application/repositories.interface/INortusRepository";
-import { Ticket, TicketPriority, TicketStatus } from "@/src/domain/entities/tickets";
+import {
+  Ticket,
+  TicketPriority,
+  TicketStatus,
+} from "@/src/domain/entities/tickets";
 import { GetAllTicketsResponse } from "@/src/domain/responses/tickets";
 
 export interface GetAllTicketsInput {
@@ -30,11 +34,10 @@ export class GetAllTicketsUseCase {
     const allTicketsResponse = await this.nortusRepository.getAllTickets();
     const tickets: Ticket[] = this._mapToDomain(allTicketsResponse);
     const filteredTickets = this._filterTickets(tickets, input);
-    const {
-      paginatedTickets,
-      totalPages,
-      currentPage
-    } = this._paginateTickets(filteredTickets, input);
+    const { paginatedTickets, totalPages, currentPage } = this._paginateTickets(
+      filteredTickets,
+      input
+    );
 
     return {
       tickets: paginatedTickets,
@@ -67,12 +70,16 @@ export class GetAllTicketsUseCase {
     const filteredTickets = tickets.filter((ticket) => {
       if (!normalizedQuery && !hasFilters) return true;
 
-      const isQueryMatch = normalizedQuery && (
-        ticket.id.toLowerCase().includes(normalizedQuery.toLowerCase())
-        || ticket.clientName.toLowerCase().includes(normalizedQuery.toLowerCase())
-        || ticket.clientEmail.toLowerCase().includes(normalizedQuery.toLowerCase())
-        || ticket.subject.toLowerCase().includes(normalizedQuery.toLowerCase())
-      );
+      const isQueryMatch =
+        normalizedQuery &&
+        (ticket.id.toLowerCase().includes(normalizedQuery.toLowerCase()) ||
+          ticket.clientName
+            .toLowerCase()
+            .includes(normalizedQuery.toLowerCase()) ||
+          ticket.clientEmail
+            .toLowerCase()
+            .includes(normalizedQuery.toLowerCase()) ||
+          ticket.subject.toLowerCase().includes(normalizedQuery.toLowerCase()));
 
       if (normalizedQuery && !hasFilters) return isQueryMatch;
 
@@ -90,7 +97,10 @@ export class GetAllTicketsUseCase {
     return filteredTickets;
   }
 
-  _paginateTickets(tickets: Ticket[], input: GetAllTicketsInput): { paginatedTickets: Ticket[], totalPages: number, currentPage: number } {
+  _paginateTickets(
+    tickets: Ticket[],
+    input: GetAllTicketsInput
+  ): { paginatedTickets: Ticket[]; totalPages: number; currentPage: number } {
     const { page = 1, itemsPerPage } = input;
 
     const total = tickets.length;

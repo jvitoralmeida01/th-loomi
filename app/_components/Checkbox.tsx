@@ -17,5 +17,5 @@ export default function Checkbox(props: InputProps) {
       </span>
       <span className="text-xs text-neutral-200">{label}</span>
     </label>
-  )
+  );
 }

@@ -10,5 +10,5 @@ export default function TopbarTitle() {
     <h2 className="font-montserrat font-semibold text-lg">
       {routeTitles[pathname as keyof typeof routeTitles]}
     </h2>
-  )
+  );
 }

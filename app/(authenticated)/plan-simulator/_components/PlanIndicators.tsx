@@ -10,9 +10,10 @@ import { formatCurrency } from "../_utils/formatters";
 import { PlanSimulatorRootState } from "@/app/(authenticated)/plan-simulator/_store/planSimulatorStore";
 
 export default function PlanIndicators() {
-  const { plans, vehicleValue, clientAge, additionalCoverages } = usePlanSimulatorSelector(
-    (state: PlanSimulatorRootState) => state.planSimulator
-  );
+  const { plans, vehicleValue, clientAge, additionalCoverages } =
+    usePlanSimulatorSelector(
+      (state: PlanSimulatorRootState) => state.planSimulator
+    );
 
   if (plans.length === 0) {
     return null;

@@ -8,4 +8,3 @@ export async function getPlanSimulatorData(): Promise<GetPlanSimulatorDataOutput
   const planSimulatorService = container.resolve(PlanSimulatorService);
   return await planSimulatorService.getData();
 }
-

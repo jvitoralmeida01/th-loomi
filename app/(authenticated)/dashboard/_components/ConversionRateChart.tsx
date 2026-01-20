@@ -14,7 +14,10 @@ interface ConversionRateChartProps {
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-export default function ConversionRateChart({ labels, data }: ConversionRateChartProps) {
+export default function ConversionRateChart({
+  labels,
+  data,
+}: ConversionRateChartProps) {
   const visibleLabels = useMemo(() => labels.slice(0, 6), [labels]);
   const visibleData = useMemo(() => data.data.slice(0, 6), [data]);
   const max = useMemo(() => Math.max(0, ...visibleData), [visibleData]);
@@ -138,9 +141,13 @@ export default function ConversionRateChart({ labels, data }: ConversionRateChar
         />
       </div>
       <div className="flex-1 min-h-[200px]">
-        <Chart options={chartOptions} series={series} type="bar" height="100%" />
+        <Chart
+          options={chartOptions}
+          series={series}
+          type="bar"
+          height="100%"
+        />
       </div>
     </div>
   );
 }
-

@@ -6,7 +6,12 @@ import incomingIcon from "@/assets/icons/incoming.svg";
 import checkboxIcon from "@/assets/icons/checkbox.svg";
 import clockIcon from "@/assets/icons/clock.svg";
 import Filters from "./_components/Filters";
-import { getTickets, getAllAssignees, getInfoCardsData, getTicketById } from "./actions";
+import {
+  getTickets,
+  getAllAssignees,
+  getInfoCardsData,
+  getTicketById,
+} from "./actions";
 import Card from "@/app/_components/Card";
 import Modal from "@/app/_components/Modal";
 import NewTicketForm from "./_components/NewTicketForm";
@@ -34,18 +39,18 @@ export default async function TicketManagementPage({
   searchParams,
 }: Readonly<TicketManagementPageProps>) {
   const params = await searchParams;
-  const query = await params?.query || "";
-  const status = await params?.status || "";
-  const priority = await params?.priority || "";
-  const assignee = await params?.assignee || "";
-  const page = parseInt(await params?.page || "1", 10);
+  const query = (await params?.query) || "";
+  const status = (await params?.status) || "";
+  const priority = (await params?.priority) || "";
+  const assignee = (await params?.assignee) || "";
+  const page = parseInt((await params?.page) || "1", 10);
   const showNewTicketModal = Boolean(await params?.newTicket);
-  const editTicketId = await params?.editTicket || "";
+  const editTicketId = (await params?.editTicket) || "";
 
   const [
     { tickets: paginatedTickets, totalPages, currentPage },
     { assignees },
-    infoCardsData
+    infoCardsData,
   ] = await Promise.all([
     getTickets({
       query,
@@ -56,11 +61,15 @@ export default async function TicketManagementPage({
       itemsPerPage: ITEMS_PER_PAGE,
     }),
     getAllAssignees(),
-    getInfoCardsData()
+    getInfoCardsData(),
   ]);
 
-  const editTicketData = editTicketId ? await getTicketById(editTicketId) : null;
-  const showEditTicketModal = Boolean(editTicketId && editTicketData?.success && editTicketData?.ticket);
+  const editTicketData = editTicketId
+    ? await getTicketById(editTicketId)
+    : null;
+  const showEditTicketModal = Boolean(
+    editTicketId && editTicketData?.success && editTicketData?.ticket
+  );
 
   return (
     <div className="flex flex-col gap-8 py-8 px-32 max-w-full">
@@ -88,7 +97,9 @@ export default async function TicketManagementPage({
       </div>
 
       <Card className="flex flex-col gap-2 p-6">
-        <h2 className="text-md font-montserrat font-bold text-neutral-100">Lista de Tickets</h2>
+        <h2 className="text-md font-montserrat font-bold text-neutral-100">
+          Lista de Tickets
+        </h2>
 
         <Filters assignees={assignees} />
 
@@ -124,18 +135,22 @@ export default async function TicketManagementPage({
             </thead>
             <tbody>
               {paginatedTickets.map((ticket, index) => (
-                <TableRow key={ticket.id} ticket={ticket} isLastRow={index === paginatedTickets.length - 1} />
+                <TableRow
+                  key={ticket.id}
+                  ticket={ticket}
+                  isLastRow={index === paginatedTickets.length - 1}
+                />
               ))}
               {paginatedTickets.length === 0 && (
-              <tr>
-                <td
-                  colSpan={9}
-                  className="px-2 py-8 text-center text-xs text-neutral-400"
-                >
-                  Nenhum ticket encontrado
-                </td>
-              </tr>
-            )}
+                <tr>
+                  <td
+                    colSpan={9}
+                    className="px-2 py-8 text-center text-xs text-neutral-400"
+                  >
+                    Nenhum ticket encontrado
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
@@ -149,10 +164,11 @@ export default async function TicketManagementPage({
       <NewTicketFeedback />
 
       <Modal isOpen={showEditTicketModal && !showNewTicketModal}>
-        {editTicketData?.ticket && <EditTicketForm ticket={editTicketData.ticket} />}
+        {editTicketData?.ticket && (
+          <EditTicketForm ticket={editTicketData.ticket} />
+        )}
       </Modal>
       <EditTicketFeedback />
     </div>
   );
 }
-

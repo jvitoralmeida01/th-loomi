@@ -16,4 +16,3 @@ export default function PlanSimulatorStoreProvider({
 
   return <Provider store={storeRef.current}>{children}</Provider>;
 }
-

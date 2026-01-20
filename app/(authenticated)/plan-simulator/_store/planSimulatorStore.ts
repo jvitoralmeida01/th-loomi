@@ -12,4 +12,3 @@ export const makeStore = () => {
 export type PlanSimulatorStore = ReturnType<typeof makeStore>;
 export type PlanSimulatorRootState = ReturnType<PlanSimulatorStore["getState"]>;
 export type PlanSimulatorDispatch = PlanSimulatorStore["dispatch"];
-

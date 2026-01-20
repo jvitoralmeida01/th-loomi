@@ -1,10 +1,32 @@
 import { injectable, inject } from "tsyringe";
-import { GetAllTicketsUseCase, GetAllTicketsInput, GetAllTicketsOutput } from "@/src/application/useCases/GetAllTicketsUseCase";
-import { GetAllAssigneesOutput, GetAllAssigneesUseCase } from "../useCases/GetAllAssigneesUseCase";
-import { GetInfoCardsDataOutput, GetInfoCardsDataUseCase } from "../useCases/GetInfoCardsDataUseCase";
-import { CreateTicketInput, CreateTicketOutput, CreateTicketUseCase } from "../useCases/CreateTicketUseCase";
-import { GetTicketByIdInput, GetTicketByIdOutput, GetTicketByIdUseCase } from "../useCases/GetTicketByIdUseCase";
-import { UpdateTicketInput, UpdateTicketOutput, UpdateTicketUseCase } from "../useCases/UpdateTicketUseCase";
+import {
+  GetAllTicketsUseCase,
+  GetAllTicketsInput,
+  GetAllTicketsOutput,
+} from "@/src/application/useCases/GetAllTicketsUseCase";
+import {
+  GetAllAssigneesOutput,
+  GetAllAssigneesUseCase,
+} from "../useCases/GetAllAssigneesUseCase";
+import {
+  GetInfoCardsDataOutput,
+  GetInfoCardsDataUseCase,
+} from "../useCases/GetInfoCardsDataUseCase";
+import {
+  CreateTicketInput,
+  CreateTicketOutput,
+  CreateTicketUseCase,
+} from "../useCases/CreateTicketUseCase";
+import {
+  GetTicketByIdInput,
+  GetTicketByIdOutput,
+  GetTicketByIdUseCase,
+} from "../useCases/GetTicketByIdUseCase";
+import {
+  UpdateTicketInput,
+  UpdateTicketOutput,
+  UpdateTicketUseCase,
+} from "../useCases/UpdateTicketUseCase";
 
 @injectable()
 export class TicketManagementService {
@@ -20,7 +42,7 @@ export class TicketManagementService {
     @inject(GetTicketByIdUseCase)
     private readonly getTicketByIdUseCase: GetTicketByIdUseCase,
     @inject(UpdateTicketUseCase)
-    private readonly updateTicketUseCase: UpdateTicketUseCase,
+    private readonly updateTicketUseCase: UpdateTicketUseCase
   ) {}
 
   async getAllTickets(input: GetAllTicketsInput): Promise<GetAllTicketsOutput> {
@@ -47,4 +69,3 @@ export class TicketManagementService {
     return await this.updateTicketUseCase.execute(input);
   }
 }
-
