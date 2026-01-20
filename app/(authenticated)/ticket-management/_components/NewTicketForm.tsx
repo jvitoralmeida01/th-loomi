@@ -1,5 +1,5 @@
 import Button from "@/app/_components/Button";
-import { cancelTicketCreation, fillTicketParameters } from "../actions";
+import { cancelTicketCreation, createTicket } from "../actions";
 import Image from "next/image";
 import CloseOutlinedIcon from "@/assets/icons/close_outlined.svg";
 import NewTicketFormCancelButton from "./NewTicketFormCancelButton";
@@ -29,7 +29,7 @@ export default function NewTicketForm() {
 
       </div>
 
-      <form action={fillTicketParameters} className="flex flex-col gap-3">
+      <form action={createTicket} className="flex flex-col gap-3">
         <div className="flex flex-col gap-1">
           <label htmlFor="clientName" className="text-sm font-space-grotesk tracking-tight text-neutral-100 pl-4">
             Nome do cliente
@@ -70,13 +70,13 @@ export default function NewTicketForm() {
               id="priority"
               name="priority"
               required
+              defaultValue=""
               className="appearance-none w-full rounded-2xl border border-glass-edge bg-neutral-100/5 px-5 py-4 text-xs text-neutral-100 placeholder:text-neutral-400 focus:outline-none focus:border-primary cursor-pointer"
             >
               <option value="" disabled className="bg-background">
                 Selecione o nível de urgência do atendimento
               </option>
               {TicketPriorityValues
-                .filter((priority) => priority !== "Urgente")
                 .map((priority) => (
                   <option key={priority} value={priority} className="bg-background">
                     {priority}

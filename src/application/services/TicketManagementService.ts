@@ -2,6 +2,7 @@ import { injectable, inject } from "tsyringe";
 import { GetAllTicketsUseCase, GetAllTicketsInput, GetAllTicketsOutput } from "@/src/application/useCases/GetAllTicketsUseCase";
 import { GetAllAssigneesOutput, GetAllAssigneesUseCase } from "../useCases/GetAllAssigneesUseCase";
 import { GetInfoCardsDataOutput, GetInfoCardsDataUseCase } from "../useCases/GetInfoCardsDataUseCase";
+import { CreateTicketInput, CreateTicketOutput, CreateTicketUseCase } from "../useCases/CreateTicketUseCase";
 
 @injectable()
 export class TicketManagementService {
@@ -12,6 +13,8 @@ export class TicketManagementService {
     private readonly getAllAssigneesUseCase: GetAllAssigneesUseCase,
     @inject(GetInfoCardsDataUseCase)
     private readonly getInfoCardsDataUseCase: GetInfoCardsDataUseCase,
+    @inject(CreateTicketUseCase)
+    private readonly createTicketUseCase: CreateTicketUseCase,
   ) {}
 
   async getAllTickets(input: GetAllTicketsInput): Promise<GetAllTicketsOutput> {
@@ -24,6 +27,10 @@ export class TicketManagementService {
 
   async getInfoCardsData(): Promise<GetInfoCardsDataOutput> {
     return await this.getInfoCardsDataUseCase.execute({});
+  }
+
+  async createTicket(input: CreateTicketInput): Promise<CreateTicketOutput> {
+    return await this.createTicketUseCase.execute(input);
   }
 }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { toast, Toaster } from "sonner";
 import { useEffect, useRef } from "react";
 import CloseIcon from "@/assets/icons/close.svg";
@@ -34,13 +34,18 @@ function ToastContent({ title, subtitle, isSuccess, onClose }: { title: string; 
 
 export default function NewTicketFeedback() {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
   const newTicketFeedback = searchParams.get("newTicketFeedback");
-  const shouldShowToast = newTicketFeedback && searchParams.size === 1;
   const shownRef = useRef<string | null>(null);
 
   useEffect(() => {
-    const isFirstRender = shownRef.current === null;
-    if (!shouldShowToast || !isFirstRender) return;
+    if (!newTicketFeedback) {
+      shownRef.current = null;
+      return;
+    }
+
+    if (shownRef.current === newTicketFeedback) return;
 
     shownRef.current = newTicketFeedback;
 
@@ -53,7 +58,7 @@ export default function NewTicketFeedback() {
           onClose={() => toast.dismiss(toastId)}
         />
       ), { duration: 2000 });
-    } else {
+    } else if (newTicketFeedback === "error") {
       const toastId = toast.custom((_) => (
         <ToastContent
           title="Erro ao criar ticket"
@@ -63,7 +68,13 @@ export default function NewTicketFeedback() {
         />
       ), { duration: 2000 });
     }
-  }, [shouldShowToast, newTicketFeedback]);
+
+    // Clear the query parameter from the URL
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("newTicketFeedback");
+    const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname;
+    router.replace(newUrl);
+  }, [newTicketFeedback, searchParams, router, pathname]);
 
   return (
     <Toaster

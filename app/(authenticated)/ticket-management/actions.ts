@@ -3,11 +3,12 @@
 import routes from "@/app/_utils/routes";
 import { redirect } from "next/navigation";
 import { container } from "@/di/container";
-import { Ticket, TicketPriority, TicketPriorityValues, TicketStatus } from "@/src/domain/entities/tickets";
+import { Ticket, TicketPriority, TicketPriorityValues } from "@/src/domain/entities/tickets";
 import { TicketManagementService } from "@/src/application/services/TicketManagementService";
 import { GetAllTicketsInput, GetAllTicketsOutput } from "@/src/application/useCases/GetAllTicketsUseCase";
 import { GetAllAssigneesOutput } from "@/src/application/useCases/GetAllAssigneesUseCase";
 import { GetInfoCardsDataOutput } from "@/src/application/useCases/GetInfoCardsDataUseCase";
+import { CreateTicketInput, CreateTicketOutput } from "@/src/application/useCases/CreateTicketUseCase";
 
 export async function getTickets(params: Readonly<GetAllTicketsInput>): Promise<GetAllTicketsOutput> {
   const ticketManagementService = container.resolve(TicketManagementService);
@@ -24,53 +25,25 @@ export async function getInfoCardsData(): Promise<GetInfoCardsDataOutput> {
   return await ticketManagementService.getInfoCardsData();
 };
 
-export interface CreateTicketParams {
-  clientName: string;
-  email: string;
-  priority: string;
-  assignee: string;
-  subject: string;
-}
-
 export type NewTicketFeedbackType = "success" | "error";
 
-export async function fillTicketParameters(formData: FormData) {
-  const clientName = formData.get("clientName") as string;
-  const email = formData.get("email") as string;
-  const priority = formData.get("priority") as string;
-  const assignee = formData.get("assignee") as string;
-  const subject = formData.get("subject") as string;
-
-  redirect(`${routes.ticketManagement}?formData=${encodeURIComponent(JSON.stringify({ clientName, email, priority, assignee, subject }))}`);
-}
-
-export async function createTicket(params: CreateTicketParams) {
-  const { clientName, email, priority, assignee, subject } = params;
-
-  if (!clientName || !email || !priority || !assignee || !subject) {
-    throw new Error("Todos os campos são obrigatórios");
-  }
-
-  const randomTicketId = `TK${Math.floor(1000 + Math.random() * 9000)}`;
-
-  if (!TicketPriorityValues.includes(priority as TicketPriority)) {
-    throw new Error("Prioridade inválida");
-  }
-
-  const newTicket: Partial<Ticket> = {
-    id: randomTicketId,
-    priority: priority as TicketPriority,
-    clientName: clientName.trim(),
-    clientEmail: email.trim(),
-    subject: subject.trim(),
-    status: "Aberto",
-    assignee: assignee.trim(),
+export async function createTicket(formData: FormData) {
+  const newTicket: CreateTicketInput = {
+    clientName: formData.get("clientName") as string,
+    email: formData.get("email") as string,
+    priority: formData.get("priority") as string,
+    assignee: formData.get("assignee") as string,
+    subject: formData.get("subject") as string,
   };
 
-  const errorFeedback: NewTicketFeedbackType = "error";
-  const feedbackType: NewTicketFeedbackType = "success";
+  const ticketManagementService = container.resolve(TicketManagementService);
+  const createTicketOutput = await ticketManagementService.createTicket(newTicket);
 
-  redirect(`${routes.ticketManagement}?newTicketFeedback=${feedbackType}`);
+  if (createTicketOutput.success) {
+    redirect(`${routes.ticketManagement}?newTicketFeedback=success`);
+  } else {
+    redirect(`${routes.ticketManagement}?newTicketFeedback=error`);
+  }
 }
 
 export async function cancelTicketCreation() {
