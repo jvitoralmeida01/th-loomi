@@ -115,7 +115,7 @@ export default function CustomerMap({ locations }: CustomerMapProps) {
 
     const tileLayer = new TileLayer({
       source: new XYZ({
-        url: "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}.png",
+        url: "https://{a-d}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
         attributions:
           '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
       }),
