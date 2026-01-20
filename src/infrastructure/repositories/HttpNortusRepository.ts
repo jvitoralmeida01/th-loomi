@@ -17,6 +17,7 @@ import {
   GetUserByEmailResponse,
   LoginResponse,
 } from "@/src/domain/responses/auth";
+import { GetChatHistoryResponse } from "@/src/domain/responses/chat";
 
 export const TICKETS_CACHE_TAG = "tickets";
 export const DASHBOARD_CACHE_TAG = "dashboard";
@@ -145,7 +146,7 @@ export class HttpNortusRepository implements INortusRepository {
       const e = new Error(
         `Failed to update ticket: ${response.status} - ${response.statusText}`
       );
-      console.error("Error: ", ticketId, ticket, e);
+
       throw e;
     }
 
@@ -206,6 +207,22 @@ export class HttpNortusRepository implements INortusRepository {
     if (!response.ok) {
       throw new Error(
         `Failed to fetch plan simulator data: ${response.status} - ${response.statusText}`
+      );
+    }
+
+    return response.json();
+  }
+
+  async getChatHistory(): Promise<GetChatHistoryResponse> {
+    const response = await fetch(`${this.apiBaseUrl}/nortus-v1/chat/`, {
+      method: "GET",
+      headers: this.headers,
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch chat history: ${response.status} - ${response.statusText}`
       );
     }
 

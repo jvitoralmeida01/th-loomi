@@ -7,6 +7,7 @@ import {
   GetUserByEmailResponse,
   LoginResponse,
 } from "@/src/domain/responses/auth";
+import { GetChatHistoryResponse } from "@/src/domain/responses/chat";
 import { GetDashboardResponse } from "@/src/domain/responses/dashboard";
 import { GetMapLocationsResponse } from "@/src/domain/responses/GetMapLocationsResponse";
 import { PlanSimulatorDataResponse } from "@/src/domain/responses/planSimulator";
@@ -34,4 +35,7 @@ export interface INortusRepository {
 
   // Plan Simulator
   getPlanSimulatorData(): Promise<PlanSimulatorDataResponse>;
+
+  // Chat
+  getChatHistory(): Promise<GetChatHistoryResponse>;
 }
