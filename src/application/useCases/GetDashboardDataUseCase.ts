@@ -1,7 +1,11 @@
 import { injectable, inject } from "tsyringe";
 import { INortusRepository } from "@/src/application/repositories.interface/INortusRepository";
 import { GetDashboardResponse } from "@/src/domain/responses/dashboard";
-import { Client, ConversionRateData, KpiEvolutionData } from "@/src/domain/entities/dashboard";
+import {
+  Client,
+  ConversionRateData,
+  KpiEvolutionData,
+} from "@/src/domain/entities/dashboard";
 
 export interface GetDashboardInput {
   query?: string;
@@ -14,20 +18,19 @@ export interface GetDashboardInput {
 export interface GetDashboardOutput {
   charts: {
     kpiEvolution: {
-      labels: string[],
-      arpu: KpiEvolutionData
-      conversionRate: KpiEvolutionData
-      churn: KpiEvolutionData
-      retention: KpiEvolutionData
+      labels: string[];
+      arpu: KpiEvolutionData;
+      conversionRate: KpiEvolutionData;
+      churn: KpiEvolutionData;
+      retention: KpiEvolutionData;
     };
     conversionRate: {
-      arpu: ConversionRateData
-      conversionRate: ConversionRateData
-      churn: ConversionRateData
-      retention: ConversionRateData
+      arpu: ConversionRateData;
+      conversionRate: ConversionRateData;
+      churn: ConversionRateData;
+      retention: ConversionRateData;
     };
-  }
-  map: {},
+  };
   clients: {
     data: Client[];
     filters: {
@@ -46,7 +49,8 @@ export class GetDashboardUseCase {
   ) {}
 
   async execute(input: GetDashboardInput): Promise<GetDashboardOutput> {
-    const dashboardDataResponse = await this.nortusRepository.getDashboardData();
+    const dashboardDataResponse =
+      await this.nortusRepository.getDashboardData();
     const data: GetDashboardOutput = this._mapToDomain(dashboardDataResponse);
     const filteredClients = this._filterClients(data.clients.data, input);
     const sortedClients = this._sortClients(filteredClients, input.sort);
@@ -75,7 +79,7 @@ export class GetDashboardUseCase {
           conversionRate: response.kpisResume.conversion,
           churn: response.kpisResume.churn,
           retention: response.kpisResume.retention,
-        }
+        },
       },
       map: {},
       clients: {
@@ -98,11 +102,11 @@ export class GetDashboardUseCase {
     const filteredClients = clients.filter((client) => {
       if (!normalizedQuery && !hasFilters) return true;
 
-      const isQueryMatch = normalizedQuery && (
-        client.id.toLowerCase().includes(normalizedQuery.toLowerCase())
-        || client.name.toLowerCase().includes(normalizedQuery.toLowerCase())
-        || client.email.toLowerCase().includes(normalizedQuery.toLowerCase())
-      );
+      const isQueryMatch =
+        normalizedQuery &&
+        (client.id.toLowerCase().includes(normalizedQuery.toLowerCase()) ||
+          client.name.toLowerCase().includes(normalizedQuery.toLowerCase()) ||
+          client.email.toLowerCase().includes(normalizedQuery.toLowerCase()));
 
       if (normalizedQuery && !hasFilters) return isQueryMatch;
 
@@ -121,7 +125,6 @@ export class GetDashboardUseCase {
   }
 
   _sortClients(clients: Client[], sort?: string): Client[] {
-    console.log("SORT", sort);
     if (!sort) return clients;
 
     if (sort === "asc") {

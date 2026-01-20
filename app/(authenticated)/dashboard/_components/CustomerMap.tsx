@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import Map from "ol/Map";
 import View from "ol/View";
 import TileLayer from "ol/layer/Tile";
@@ -10,119 +10,93 @@ import XYZ from "ol/source/XYZ";
 import Feature from "ol/Feature";
 import Point from "ol/geom/Point";
 import { fromLonLat } from "ol/proj";
-import { Style, Circle, Fill, Stroke, Text } from "ol/style";
+import { Style, Circle, Fill, Icon } from "ol/style";
 import Overlay from "ol/Overlay";
-
 import Select from "./Select";
-import {
-  customerLocations,
-  locationFilterOptions,
-  typeFilterOptions,
-  CustomerLocation,
-  CustomerType,
-} from "../_utils/mock";
+import { MapLocation } from "@/src/domain/entities/mapLocations";
+import getMarkerIcon from "../_utils/getMarkerIcon";
 
-const getMarkerColor = (
-  type: CustomerType,
-  status: string
-): { fill: string; stroke: string } => {
-  if (status === "inactive") {
-    return { fill: "#BA1A1A", stroke: "#fff" };
-  }
-  if (status === "pending") {
-    return { fill: "#43D2CB", stroke: "#fff" };
-  }
+interface CustomerMapProps {
+  locations: MapLocation[];
+}
 
-  switch (type) {
-    case "commercial":
-      return { fill: "#1876D2", stroke: "#fff" };
-    case "industrial":
-      return { fill: "#43D2CB", stroke: "#fff" };
-    case "residential":
-    default:
-      return { fill: "#2DB3C8", stroke: "#fff" };
-  }
-};
-
-const getMarkerIcon = (type: CustomerType): string => {
-  switch (type) {
-    case "commercial":
-      return "🏢";
-    case "industrial":
-      return "🏭";
-    case "residential":
-    default:
-      return "🏠";
-  }
-};
-
-export default function CustomerMap() {
+export default function CustomerMap({ locations }: CustomerMapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<Map | null>(null);
   const vectorSourceRef = useRef<VectorSource | null>(null);
   const overlayRef = useRef<Overlay | null>(null);
+  const initialCenterRef = useRef<[number, number]>(
+    locations[0]?.coordinates ?? [-34.8813, -8.0555]
+  );
 
   const [locationFilter, setLocationFilter] = useState("");
-  const [typeFilter, setTypeFilter] = useState("");
-  const [selectedCustomer, setSelectedCustomer] = useState<CustomerLocation | null>(
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState<MapLocation | null>(
     null
   );
 
-  const filterLocations = useCallback(
-    (locations: CustomerLocation[]) => {
-      return locations.filter((location) => {
-        const typeMatch = !typeFilter || location.type === typeFilter;
-
-        let locationMatch = true;
-        if (locationFilter) {
-          const [lon, lat] = location.coordinates;
-          switch (locationFilter) {
-            case "austin-north":
-              locationMatch = lat > 30.32;
-              break;
-            case "austin-south":
-              locationMatch = lat < 30.28;
-              break;
-            case "austin-east":
-              locationMatch = lon > -97.72;
-              break;
-            case "austin-west":
-              locationMatch = lon < -97.78;
-              break;
-          }
-        }
-
-        return typeMatch && locationMatch;
-      });
-    },
-    [locationFilter, typeFilter]
+  const locationFilterOptions = useMemo(
+    () => [
+      { label: "Todos os locais", value: "" },
+      ...locations.map((location) => ({
+        value: location.id,
+        label: location.name,
+      })),
+    ],
+    [locations]
   );
 
-  const createFeatures = useCallback((locations: CustomerLocation[]) => {
+  const categoryFilterOptions = useMemo(() => {
+    const categories = Array.from(
+      new Set(locations.map((location) => location.category))
+    );
+
+    return [
+      { label: "Todas as categorias", value: "" },
+      ...categories.map((category) => ({
+        value: category,
+        label: category,
+      })),
+    ];
+  }, [locations]);
+
+  const filterLocations = useCallback(
+    (locations: MapLocation[]) =>
+      locations.filter((location) => {
+        const locationMatch = !locationFilter || location.id === locationFilter;
+        const categoryMatch =
+          !categoryFilter || location.category === categoryFilter;
+
+        return locationMatch && categoryMatch;
+      }),
+    [locationFilter, categoryFilter]
+  );
+
+  const createFeatures = useCallback((locations: MapLocation[]) => {
     return locations.map((location) => {
       const feature = new Feature({
         geometry: new Point(fromLonLat(location.coordinates)),
-        customer: location,
+        location,
       });
 
-      const colors = getMarkerColor(location.type, location.status);
-      const icon = getMarkerIcon(location.type);
-
-      feature.setStyle(
+      feature.setStyle([
         new Style({
           image: new Circle({
             radius: 14,
-            fill: new Fill({ color: colors.fill }),
-            stroke: new Stroke({ color: colors.stroke, width: 2 }),
+            fill: new Fill({ color: location.color }),
           }),
-          text: new Text({
-            text: icon,
-            font: "12px sans-serif",
-            offsetY: 1,
+        }),
+        new Style({
+          image: new Icon({
+            src: getMarkerIcon(location.icon),
+            scale: 0.8,
+            anchor: [0.5, 0.5],
+            anchorXUnits: "fraction",
+            anchorYUnits: "fraction",
           }),
-        })
-      );
+        }),
+      ]);
 
       return feature;
     });
@@ -151,7 +125,7 @@ export default function CustomerMap() {
       target: mapRef.current,
       layers: [tileLayer, vectorLayer],
       view: new View({
-        center: fromLonLat([-97.7431, 30.31]),
+        center: fromLonLat(initialCenterRef.current),
         zoom: 12,
       }),
       controls: [],
@@ -160,9 +134,9 @@ export default function CustomerMap() {
     if (popupRef.current) {
       const overlay = new Overlay({
         element: popupRef.current,
-        autoPan: true,
+        autoPan: false,
         positioning: "bottom-center",
-        offset: [0, -20],
+        offset: [0, 0],
       });
       map.addOverlay(overlay);
       overlayRef.current = overlay;
@@ -171,11 +145,11 @@ export default function CustomerMap() {
     map.on("click", (event) => {
       const feature = map.forEachFeatureAtPixel(event.pixel, (f) => f);
       if (feature) {
-        const customer = feature.get("customer") as CustomerLocation;
-        setSelectedCustomer(customer);
+        const location = feature.get("location") as MapLocation;
+        setSelectedLocation(location);
         overlayRef.current?.setPosition(event.coordinate);
       } else {
-        setSelectedCustomer(null);
+        setSelectedLocation(null);
         overlayRef.current?.setPosition(undefined);
       }
     });
@@ -196,48 +170,25 @@ export default function CustomerMap() {
   useEffect(() => {
     if (!vectorSourceRef.current) return;
 
-    const filteredLocations = filterLocations(customerLocations);
+    const filteredLocations = filterLocations(locations);
     const features = createFeatures(filteredLocations);
 
     vectorSourceRef.current.clear();
     vectorSourceRef.current.addFeatures(features);
 
-    setSelectedCustomer(null);
     overlayRef.current?.setPosition(undefined);
-  }, [filterLocations, createFeatures]);
+  }, [filterLocations, createFeatures, locations]);
 
-  const handleLocationFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleLocationFilterChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setLocationFilter(e.target.value);
   };
 
-  const handleTypeFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setTypeFilter(e.target.value);
-  };
-
-  const getStatusLabel = (status: string) => {
-    switch (status) {
-      case "active":
-        return "Ativo";
-      case "inactive":
-        return "Inativo";
-      case "pending":
-        return "Pendente";
-      default:
-        return status;
-    }
-  };
-
-  const getTypeLabel = (type: CustomerType) => {
-    switch (type) {
-      case "residential":
-        return "Residencial";
-      case "commercial":
-        return "Comercial";
-      case "industrial":
-        return "Industrial";
-      default:
-        return type;
-    }
+  const handleCategoryFilterChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setCategoryFilter(e.target.value);
   };
 
   return (
@@ -254,10 +205,10 @@ export default function CustomerMap() {
             options={locationFilterOptions}
           />
           <Select
-            name="type"
-            value={typeFilter}
-            onChange={handleTypeFilterChange}
-            options={typeFilterOptions}
+            name="category"
+            value={categoryFilter}
+            onChange={handleCategoryFilterChange}
+            options={categoryFilterOptions}
           />
         </div>
       </div>
@@ -265,33 +216,31 @@ export default function CustomerMap() {
         <div ref={mapRef} className="w-full h-full" />
         <div
           ref={popupRef}
-          className={`absolute z-10 ${selectedCustomer ? "block" : "hidden"}`}
+          className={`absolute z-10 ${selectedLocation ? "block" : "hidden"}`}
         >
-          {selectedCustomer && (
-            <div className="bg-surface border border-glass-edge rounded-xl p-4 shadow-xl min-w-[200px]">
+          {selectedLocation && (
+            <div className="bg-surface opacity-90 border border-glass-edge rounded-xl p-4 shadow-xl min-w-[200px]">
               <h3 className="text-sm font-montserrat font-bold text-neutral-100 mb-2">
-                {selectedCustomer.name}
+                {selectedLocation.name}
               </h3>
               <div className="flex flex-col gap-1 text-xs text-neutral-300">
                 <p>
-                  <span className="text-neutral-400">Tipo:</span>{" "}
-                  {getTypeLabel(selectedCustomer.type)}
+                  <span className="text-neutral-400">Categoria:</span>{" "}
+                  {selectedLocation.category}
                 </p>
                 <p>
-                  <span className="text-neutral-400">Status:</span>{" "}
-                  {getStatusLabel(selectedCustomer.status)}
+                  <span className="text-neutral-400">Descrição:</span>{" "}
+                  {selectedLocation.description}
                 </p>
                 <p>
                   <span className="text-neutral-400">Endereço:</span>{" "}
-                  {selectedCustomer.address}
+                  {selectedLocation.address}
                 </p>
               </div>
             </div>
           )}
         </div>
       </div>
-
     </div>
   );
 }
-

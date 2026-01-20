@@ -3,7 +3,7 @@ import KpiEvolutionChart from "./_components/KpiEvolutionChart";
 import ConversionRateChart from "./_components/ConversionRateChart";
 import CustomerMap from "./_components/CustomerMap";
 import ClientsTable from "./_components/ClientsTable";
-import { getDashboardData } from "./actions";
+import { getDashboardData, getMapLocations } from "./actions";
 
 interface DashboardPageProps {
   searchParams?: Promise<{
@@ -25,13 +25,16 @@ export default async function DashboardPage({
   const region = (await params?.region) || "";
   const sort = (await params?.sort) || "";
 
-  const data = await getDashboardData({
-    query,
-    status,
-    type,
-    region,
-    sort,
-  });
+  const [data, mapLocations] = await Promise.all([
+    getDashboardData({
+      query,
+      status,
+      type,
+      region,
+      sort,
+    }),
+    getMapLocations(),
+  ]);
 
   return (
     <div className="flex flex-col gap-6 py-8 px-32 max-w-full">
@@ -54,9 +57,9 @@ export default async function DashboardPage({
         </Card>
       </div>
 
-      {/* <Card className="p-4">
-        <CustomerMap data={data.map} />
-      </Card> */}
+      <Card className="p-4">
+        <CustomerMap locations={mapLocations.locations} />
+      </Card>
 
       <Card className="p-6">
         <ClientsTable
